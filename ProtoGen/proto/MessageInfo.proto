@@ -1,0 +1,495 @@
+package netty;
+option java_package = "com.rxqp.dn.protobuf";
+option java_outer_classname = "DdzProto";
+
+enum MESSAGE_ID{
+	msg_LoginReq = 1;
+	msg_LoginResp = 2;
+	msg_CreateRoomReq = 3;
+	msg_CreateRoomResp = 4;
+	msg_EntryRoomReq = 5;
+	msg_EntryRoomResp = 6;
+	msg_PostEntryRoom = 7;
+	msg_Player = 8;
+	msg_DisbandReq = 9;
+	msg_PostDisband = 10;
+	msg_DisbandCheckReq = 11;
+	msg_PostDisbandCheck = 12;
+	msg_SettlementInfo = 13;
+	msg_DiscardReq = 14;
+	msg_PostDiscard = 15;
+	msg_DealReq = 16;
+	msg_DealResp = 17;
+	msg_GrabHostReq = 18;
+	msg_PostGrabHostResp = 19;
+	msg_MsgInfo = 20;
+	msg_PostDealOver = 21;
+	
+	// 斗牛相关
+	msg_CreateNNRoomReq = 22;
+	msg_CreateNNRoomResp = 23;
+	msg_EntryNNRoomReq = 24;
+	msg_EntryNNRoomResp = 25;
+	msg_PostNNEntryRoom = 26;
+	msg_StartNNGameReq = 27;
+	msg_StartNNGameResp = 28;
+	msg_PostStartNNGame = 29;
+	msg_NNPrepareReq = 30;
+	msg_PostNNDealResp = 31;
+	msg_StakeReq = 32;
+	msg_StakeResp = 33;
+	msg_PostStakeResp = 34;
+	msg_NNShowCardsReq = 35;
+	msg_NNShowCardsResp = 36;
+	msg_PostNNShowCards = 37;
+	msg_PostNNPrepareResp = 38;
+	msg_PostStakeOver = 39;
+	msg_NNDissolutionReq = 40;
+	msg_PostDissolutionResp = 41;
+	msg_NNAnswerDissolutionReq = 42;
+	msg_PostAnswerDissolutionResult = 43;
+	msg_PostDissolutionResult = 44;
+	
+	// 语音相关
+	msg_SendSoundReq = 45;
+	msg_PostSendSoundResp = 46;
+	
+	// 退出游戏
+	msg_SignOutReq = 47;
+}
+
+enum NNType
+{
+	NNT_ERROR				= 0; //错误类型
+	NNT_NONE				= 1; //无牛
+	NNT_SPECIAL_NIU1		= 2; //牛一
+	NNT_SPECIAL_NIU2		= 3; //牛二
+	NNT_SPECIAL_NIU3		= 4; //牛三
+	NNT_SPECIAL_NIU4		= 5; //牛四
+	NNT_SPECIAL_NIU5		= 6; //牛五
+	NNT_SPECIAL_NIU6		= 7; //牛六
+	NNT_SPECIAL_NIU7		= 8; //牛七
+	NNT_SPECIAL_NIU8		= 9; //牛八
+	NNT_SPECIAL_NIU9		= 10; //牛九
+	NNT_SPECIAL_NIUNIU		= 11; //牛牛
+	NNT_SPECIAL_NIUHUA		= 12; //五花牛
+	NNT_SPECIAL_BOMEBOME	= 13; //炸弹
+}
+
+message MessageInfo{
+	required MESSAGE_ID messageId = 1;
+	optional LoginReq loginReq = 2;
+	optional LoginResp loginResp = 3;
+	optional CreateRoomReq createRoomReq = 4;
+	optional CreateRoomResp createRoomResp = 5;
+	optional EntryRoomReq entryRoomReq = 6;
+	optional EntryRoomResp entryRoomResp = 7;
+	optional PostEntryRoom postEntryRoom = 8;
+	optional Player player = 9;
+	optional DisbandReq disbandReq = 10;
+	optional PostDisband postDisband = 11;
+	optional DisbandCheckReq disbandCheckReq = 12;
+	optional PostDisbandCheck postDisbandCheck = 13;
+	optional SettlementInfo settlementInfo = 14;
+	optional DiscardReq discardReq = 15;
+	optional PostDiscard postDiscard = 16;
+	optional DealReq dealReq = 17;
+	optional DealResp dealResp = 18;
+	optional GrabHostReq grabHostReq = 19;
+	optional MsgInfo msgInfo = 20;
+	optional PostGrabHostResp postGrabHostResp = 21;
+	optional PostDealOver postDealOver = 22;
+	
+	// 斗牛相关
+	optional CreateNNRoomReq createNNRoomReq = 23;
+	optional CreateNNRoomResp createNNRoomResp = 24;
+	optional EntryNNRoomReq entryNNRoomReq = 25;
+	optional EntryNNRoomResp entryNNRoomResp = 26;
+	optional PostNNEntryRoom postNNEntryRoom = 27;
+	optional StartNNGameReq startNNGame = 28;
+	optional StartNNGameResp startNNgameResp = 29;
+	optional PostStartNNGame postStartNNGame = 30;
+	optional NNPrepareReq nnPrepareReq = 31;
+	optional PostNNDealResp nnDealResp = 32;
+	optional StakeReq stakeReq = 33;
+	optional StakeResp stakeResp = 34;
+	optional PostStakeResp postStakeResp = 35;
+	optional NNShowCardsReq nnShowCardsReq = 36;
+	optional NNShowCardsResp nnShowCardsResp = 37;
+	optional PostNNShowCards postNNShowCards = 38;
+	optional PostNNPrepareResp postNNPrepareResp = 39;
+	optional PostStakeOver postStakeOver = 40;
+	optional NNDissolutionReq nnDissolutionReq = 41;
+	optional PostDissolutionResp postDissolutionResp = 42;
+	optional NNAnswerDissolutionReq nnAnswerDissolutionReq = 43;
+	optional PostAnswerDissolutionResult PostAnswerDissolutionResult = 44;
+	optional PostDissolutionResult postDissolutionResult = 45;
+	// 语音相关
+	optional SendSoundReq sendSoundReq= 46;
+	optional PostSendSoundResp postSendSoundResp = 47;
+	
+	// 退出游戏
+	optional SignOutReq signOutReq = 48;
+}
+
+//1、登录信息
+message LoginReq{
+	// 微信授权得到的code
+	required string code = 1;
+	// 玩家id（微信openid绑定过游戏ID，则使用游戏ID登录）
+	optional int32 playerid = 2;
+}
+
+//用户基本信息
+message PlayerBaseInfo{
+	// 玩家唯一id，和微信openid绑定
+    required int32 ID = 1;
+	// 玩家微信昵称
+    required string name = 2;
+	// 玩家微信头像url
+	optional string imgUrl = 3;
+	// 玩家当前拥有的房卡数量
+	optional int32 cardNum = 4;
+}
+
+//2、登录返回信息
+message LoginResp{
+	required PlayerBaseInfo playerBaseInfo = 1;
+	// 分享时跳转的连接
+    optional string shareurl = 2;
+}
+
+//3、创建房间请求,type=1表示房主出房费，type=2表示进入房间者均摊房费
+message CreateRoomReq{
+    required int32 games = 1;
+    required int32 type = 2;
+	required int32 playerId = 3;
+}
+
+//4、创建房间返回
+message CreateRoomResp{
+    required int32 roomId = 2;
+}
+
+//5、进入特定房间请求
+message EntryRoomReq{
+    required int32 roomId = 1;
+	required int32 playerId = 3;
+}
+
+//6、进入房间返回
+message EntryRoomResp{
+	required RoomInfo roomInfo = 2;
+	required int32 order = 3;
+}
+
+//7、广播进入房间，开始玩游戏
+message PostEntryRoom{
+	required Player player = 1;
+}
+
+//房间信息
+message RoomInfo{
+	required int32 roomId = 1;
+	repeated Player players = 2;
+	optional int32 multiple = 3;
+	optional int32 playedGames = 4;
+	optional int32 totalGames = 5;
+	optional int32 currentPlayerId = 6;
+}
+
+//8、玩家当前信息
+message Player{
+	required int32 ID = 1;
+    required string name = 2;
+	optional string imgUrl = 3;
+	required int32 score = 4;
+	// 如果是斗地主则是地主，如果是牛牛则是庄家
+	required bool isDz = 5;
+	optional int32 order = 6;
+}
+
+//扑克信息
+message Poker{
+    required int32 ID = 1;
+    required bool isOut = 2;
+}
+
+//9、玩家请求解散房间
+message DisbandReq{
+	required int32 groupId = 1;
+	required int32 playerId = 2;
+}
+
+//10、广播其他玩家解散房间
+message PostDisband{
+
+}
+
+//11、其他玩家答复解散房间请求
+message DisbandCheckReq{
+	required bool agree = 1;
+}
+
+//12、解散房间应答广播,是否解散成功
+message PostDisbandCheck{
+
+}
+
+// 结算数据
+message SettlementData
+{
+	// 玩家id
+	required int32 ID = 1;
+	// 玩家本局得分
+	required int32 gotscore = 2;
+	// 玩家总得分
+	required int32 finalscore = 3;
+	// 输赢状态
+	required bool isWin = 4;
+	
+}
+
+//13、结算信息
+message SettlementInfo{
+	repeated SettlementData players = 1;
+	required bool isOver = 2;
+}
+
+//14、出牌请求
+message DiscardReq{
+	required int32 playerId = 1;
+	repeated int32 cardIds = 2;
+	repeated int32 variableCardIds = 3;
+	required int32 cardsType = 4;
+}
+
+//15、广播出牌返回
+message PostDiscard{
+	required int32 playerId = 1;
+	repeated int32 cardIds = 2;
+	repeated int32 variableCardIds = 3;
+	required int32 remainderPokersNum = 4; 
+	required int32 nextDiscardPlayerId = 5;
+	required bool mustDiscard = 6;
+}
+
+//16、请求发牌
+message DealReq{
+	required int32 playerId = 1;
+}
+
+//17、请求发牌返回
+message DealResp{
+	required int32 playerId = 1;
+	repeated Poker pokers = 2;
+	optional RoomInfo roomInfo = 3;
+	required int32 grabHost = 4;
+}
+
+//18、抢地主请求 type:0--不抢 1--抢地主1分  2--抢地主2分  3--抢地主3分
+message GrabHostReq{
+	required int32 playerId = 1;
+	required int32 type = 2;
+}
+
+//19、广播抢地主返回
+message PostGrabHostResp{
+	required int32 type = 1;
+	required int32 playerId = 2;
+	optional int32 hostPlayerId = 3;
+	repeated Poker pokers = 4;
+	optional int32 variable = 5;
+	optional int32 nextGrabPlayerId = 6;
+}
+
+//20、返回信息
+message MsgInfo{
+	required int32 type = 1;
+	required string message = 2;
+}
+
+//21、牌发完，广播玩家，可以开始抢地主了
+message PostDealOver{
+}
+
+//23、创建牛牛房间请求,type=1表示房费房主出，type=2表示房费AA
+message CreateNNRoomReq
+{
+    required int32 games = 1;
+    required int32 type = 2;
+	required int32 playerId = 3;
+}
+
+//24、创建房间返回
+message CreateNNRoomResp{
+    required int32 roomId = 2;
+}
+
+//25、进入特定房间请求
+message EntryNNRoomReq{
+    required int32 roomId = 1;
+	required int32 playerId = 3;
+}
+
+//26、进入房间返回
+message EntryNNRoomResp{
+	required RoomInfo roomInfo = 2;
+	required int32 order = 3;
+}
+
+//27、广播进入房间，开始玩游戏
+message PostNNEntryRoom{
+	required Player player = 1;
+}
+
+//28、 牛牛开始游戏
+message StartNNGameReq
+{
+	required int32 playerid = 1;
+}
+//29、 牛牛开始游戏返回
+message StartNNGameResp
+{
+}
+
+//30、 广播牛牛游戏开始
+message PostStartNNGame
+{
+}
+
+//31、牛牛准备游戏请求
+message NNPrepareReq{
+	required int32 playerId = 1;
+}
+
+//32、牛牛广播发牌返回
+message PostNNDealResp{
+	required int32 playerId = 1;
+	// 发牌、先做发3张的
+	repeated int32 pokers = 2;
+	// 房间已完游戏局数
+	optional int32 playedGames = 3;
+	// 房间总局数
+	optional int32 totalGames = 4;
+	// 是否是庄家
+	optional bool isBanker = 5;
+}
+
+// 33、 牛牛下注
+message StakeReq
+{
+	// 玩家id
+	required int32 playerid = 1;
+	// 玩家下注分数
+	required int32 point = 2;
+}
+
+// 34、 牛牛下注返回
+message StakeResp
+{
+	// 玩家下注分数
+	required int32 point = 1;
+}
+
+// 35、 广播牛牛下注
+message PostStakeResp
+{
+	// 玩家id
+	required int32 playerid = 1;
+	// 玩家下注分数
+	required int32 point = 2;
+}
+
+// 36、开牌
+message NNShowCardsReq
+{
+	required int32 playerid = 1;
+	// 是否公开牌（false即为看牌，true即为开牌）
+	required bool showAll = 2;
+}
+
+// 37、开牌返回
+message NNShowCardsResp
+{
+	required int32 playerId = 1;
+	// 发牌剩余的2张牌
+	repeated int32 pokers = 2;
+	// 牌型类型
+	required NNType nntype = 3;
+}
+
+// 38、 广播玩家开牌
+message PostNNShowCards
+{
+	required int32 playerId = 1;
+	// 玩家的5张牌
+	repeated int32 pokers = 2;
+	// 牌型类型
+	required NNType nntype = 3;
+}
+
+//39、牛牛准备游戏请求广播
+message PostNNPrepareResp{
+	required int32 playerId = 1;
+}
+
+//40、牛牛所有玩家下注完毕
+message PostStakeOver
+{
+}
+
+//41、解散房间请求
+message NNDissolutionReq
+{
+	required int32 playerId = 1;
+}
+
+//42、广播解散房间
+message PostDissolutionResp
+{
+	required int32 playerid = 1;
+}
+
+//43、解散房间玩家应答,isAgree:1表示同意 2：表示不同意
+message NNAnswerDissolutionReq
+{
+	required int32 playerId = 1;
+	required bool isAgree = 2;
+}
+
+//44、agreeCnt:同意解散人数 disagreeCnt:不同意解散人数
+message PostAnswerDissolutionResult
+{
+	required int32 agreeCnt = 1;
+	required int32 disagreeCnt = 2;
+}
+
+//45、广播解散房间成功
+message PostDissolutionResult
+{
+}
+
+// 46、请求发送语音
+message SendSoundReq
+{
+	// 玩家id
+	required int32 playerId = 1;
+	// 播放语音id
+	required int32 soundId = 2;
+}
+
+// 47、广播发送语音
+message PostSendSoundResp
+{
+	// 玩家id
+	required int32 playerId = 1;
+	// 播放语音id
+	required int32 soundId = 2;
+}
+
+// 48、退出游戏
+message SignOutReq
+{
+	required int32 playerid = 1;
+}
