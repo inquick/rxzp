@@ -15,10 +15,6 @@ public class CreateNNMenu : MonoBehaviour
 
     public NNRoomSprite room;
 
-    // Use this for initialization
-    private int baseKeyNum = 1;
-    private int currentKeyNum = 100;
-
     private int games = 10;
     private int payType = 1;
 
@@ -26,15 +22,17 @@ public class CreateNNMenu : MonoBehaviour
     public Toggle checkNum20 = null;
     public Toggle checkNum30 = null;
 
-    public Toggle checkPaySelf = null;
+    public Toggle checkPayLead = null;
     public Toggle checkPayAA = null;
+    public Toggle checkPayWin = null;
 
     public Text text10 = null;
     public Text text20 = null;
     public Text text30 = null;
 
-    public Text textpaySelf = null;
+    public Text textpayLead = null;
     public Text textpayAA = null;
+    public Text textpayWin = null;
 
     public Text needKey = null;
     public Text leaveKey = null;
@@ -55,8 +53,9 @@ public class CreateNNMenu : MonoBehaviour
         checkNum20.onValueChanged.AddListener(CheckNum20);
         checkNum30.onValueChanged.AddListener(CheckNum30);
 
-        checkPaySelf.onValueChanged.AddListener(CheckPaySelf);
+        checkPayLead.onValueChanged.AddListener(CheckPayLead);
         checkPayAA.onValueChanged.AddListener(CheckPayAA);
+        checkPayWin.onValueChanged.AddListener(CheckPayWin);
 
         notSelect = text20.color;
         selected = text10.color;
@@ -72,6 +71,12 @@ public class CreateNNMenu : MonoBehaviour
     /// </summary>
     void CreateRoom()
     {
+        //if (NeedKeyNum() > controller.GetLeaveRoomCardNum)
+        //{
+        //    controller.ShowTips("您的房卡数量不足，无法创建房间！");
+        //    return;
+        //}
+
         MessageInfo req = new MessageInfo();
         CreateNNRoomReq creatRoom = new CreateNNRoomReq();
         req.messageId = MESSAGE_ID.msg_CreateNNRoomReq;
@@ -137,18 +142,18 @@ public class CreateNNMenu : MonoBehaviour
         }
     }
 
-    void CheckPaySelf(bool isSelected)
+    void CheckPayLead(bool isSelected)
     {
         if (isSelected)
         {
             payType = 1;
-            textpaySelf.color = selected;
+            textpayLead.color = selected;
             RefreshKeyNum();
             Debug.Log("房主支付");
         }
         else
         {
-            textpaySelf.color = notSelect;
+            textpayLead.color = notSelect;
         }
     }
     void CheckPayAA(bool isSelected)
@@ -166,14 +171,45 @@ public class CreateNNMenu : MonoBehaviour
         }
     }
 
-    void RefreshKeyNum()
+    void CheckPayWin(bool isSelected)
     {
-        int needKeyNum = baseKeyNum * games / 10;
-        if (payType == 1)
+        if (isSelected)
         {
-            needKeyNum *= 3;
+            payType = 3;
+            textpayWin.color = selected;
+            RefreshKeyNum();
+            Debug.Log("AA支付");
         }
-        needKey.text = needKeyNum + " 张";
-        leaveKey.text = (currentKeyNum - needKeyNum) + " 张";
+        else
+        {
+            textpayWin.color = notSelect;
+        }
+    }
+
+    private void RefreshKeyNum()
+    {
+
+        needKey.text = NeedKeyNum() + " 张";
+        leaveKey.text = (controller.GetLeaveRoomCardNum - NeedKeyNum()) + " 张";
+    }
+
+    private int NeedKeyNum()
+    {
+        int needKeyNum = 1;
+
+        switch (payType)
+        {
+            case 1: // 房主支付
+            case 3: // 赢家支付
+                needKeyNum = games / 2;  // (5 * games / 10)
+                break;
+            case 2: // AA支付
+                needKeyNum = games / 10;  // (1 * games / 10)
+                break;
+            default:
+                Debug.LogError("错误的房卡支付方式 " + payType);
+                break;
+        }
+        return needKeyNum;
     }
 }

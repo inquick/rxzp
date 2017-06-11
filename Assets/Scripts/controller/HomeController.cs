@@ -48,6 +48,11 @@ public class HomeController : MonoBehaviour
         get { return _gameType; }
     }
 
+    public int GetLeaveRoomCardNum
+    {
+        get { return ddzRoom.SelfPlayer.LeaveCardCount; } 
+    }
+
     /// <summary>
     /// 服务器ip
     /// </summary>
@@ -351,14 +356,14 @@ public class HomeController : MonoBehaviour
             _selfInfo.RefreshSelfInfos(ddzRoom.SelfPlayer);
             // 播放斗地主背景音乐
             _soundPlayer.PlayWelcomeMusic();
-            Debug.LogError("登录成功！！！");
-            if (msg.shareurl != null)
+            Debug.Log("登录成功！！！");
+            if (msg.shareurl != null && msg.shareurl.Length > 0 && msg.shareurl != "null")
             {
                 shareUrl = msg.shareurl;
             }
             else
             {
-                Debug.LogError("msg.shareurl is null !!!");
+                Debug.Log("msg.shareurl is null !!!");
                 shareUrl = "http://rxcard.worldwalker.cn/wyzn/index.do";
             }
         }

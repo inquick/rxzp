@@ -25,7 +25,7 @@ public class HomeMenu : MonoBehaviour
         transform.Find("nn/Create").gameObject.GetComponent<Button>().onClick.AddListener(CreateNN);
         transform.Find("nn/Enter").gameObject.GetComponent<Button>().onClick.AddListener(EnterNN);
 
-        transform.Find("player_info/BuyCard").gameObject.GetComponent<Button>().onClick.AddListener(Shop);
+        transform.Find("player_info/room_card/BuyCard").gameObject.GetComponent<Button>().onClick.AddListener(Shop);
         transform.Find("top_right/shop").gameObject.GetComponent<Button>().onClick.AddListener(Shop);
 
         transform.Find("top_right/vip").gameObject.GetComponent<Button>().onClick.AddListener(VipBtn);
@@ -84,7 +84,8 @@ public class HomeMenu : MonoBehaviour
     /// </summary>
     void Shop()
     {
-        controller.OpenWindow(WINDOW_ID.WINDOW_ID_SHOP);
+        controller.ShowTips("功能尚在研发，暂未开放！");
+        //controller.OpenWindow(WINDOW_ID.WINDOW_ID_SHOP);
     }
 
 
@@ -138,6 +139,6 @@ public class HomeMenu : MonoBehaviour
 
     void Quit()
     {
-        controller.Quit();
+        controller.ShowDialog("是否要现在离开游戏？", controller.Quit);
     }
 }

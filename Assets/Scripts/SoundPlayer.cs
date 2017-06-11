@@ -53,13 +53,16 @@ public class SoundPlayer : MonoBehaviour
         Music.volume = 1.0f;
         Sound.volume = 1.0f;
 
-        Music.volume = PlayerPrefs.GetFloat("MusicVolume");
-        Sound.volume = PlayerPrefs.GetFloat("SoundVolume");
-        nnPlayerSelf.volume = Sound.volume;
-        nnPlayer2.volume = Sound.volume;
-        nnPlayer3.volume = Sound.volume;
-        nnPlayer4.volume = Sound.volume;
-        nnPlayer5.volume = Sound.volume;
+        if (PlayerPrefs.HasKey("MusicVolume"))
+        {
+            Music.volume = PlayerPrefs.GetFloat("MusicVolume");
+        }
+
+        if (PlayerPrefs.HasKey("SoundVolume"))
+        {
+            Sound.volume = PlayerPrefs.GetFloat("SoundVolume");
+        }
+        SetSoundVolume(Sound.volume);
 
         Music.Play();
     }
@@ -129,12 +132,7 @@ public class SoundPlayer : MonoBehaviour
     /// <param name="value"></param>
     public void OnSoundVolumeChanged(Slider slider)
     {
-        Sound.volume = slider.value;
-        nnPlayerSelf.volume = slider.value;
-        nnPlayer2.volume = slider.value;
-        nnPlayer3.volume = slider.value;
-        nnPlayer4.volume = slider.value;
-        nnPlayer5.volume = slider.value;
+        SetSoundVolume(slider.value);
         Debug.Log("当前音效声音大小：" + slider.value);
 
         PlayerPrefs.SetFloat("SoundVolume", slider.value);
@@ -169,9 +167,42 @@ public class SoundPlayer : MonoBehaviour
         }
     }
 
-    public void PlayeNNSound(NNType nnType)
+    public void PlayeNNSound(int playerOrder, NNType nnType)
     {
-        nnPlayerSelf.clip = nnSounds[nnType];
-        nnPlayerSelf.Play();
+        switch (playerOrder)
+        {
+            case 1:
+                nnPlayerSelf.clip = nnSounds[nnType];
+                nnPlayerSelf.Play();
+                break;
+            case 2:
+                nnPlayer2.clip = nnSounds[nnType];
+                nnPlayer2.Play();
+                break;
+            case 3:
+                nnPlayer3.clip = nnSounds[nnType];
+                nnPlayer3.Play();
+                break;
+            case 4:
+                nnPlayer4.clip = nnSounds[nnType];
+                nnPlayer4.Play();
+                break;
+            case 5:
+                nnPlayer5.clip = nnSounds[nnType];
+                nnPlayer5.Play();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void SetSoundVolume(float value)
+    {
+        Sound.volume = value;
+        nnPlayerSelf.volume = value;
+        nnPlayer2.volume = value;
+        nnPlayer3.volume = value;
+        nnPlayer4.volume = value;
+        nnPlayer5.volume = value;
     }
 }

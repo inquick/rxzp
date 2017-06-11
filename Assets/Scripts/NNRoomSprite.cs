@@ -231,28 +231,36 @@ public class NNRoomSprite : MonoBehaviour
         if (player2.PlayerInfo != null && msg.playerId == player2.PlayerInfo.PlayerId)
         {
             player2.OnPostShowCards(msg);
+            // 播放音效
+            soundPlayer.PlayeNNSound(2, msg.nntype);
         }
         
         if (player3.PlayerInfo != null && msg.playerId == player3.PlayerInfo.PlayerId)
         {
             player3.OnPostShowCards(msg);
+            // 播放音效
+            soundPlayer.PlayeNNSound(3, msg.nntype);
         }
         
         if (player4.PlayerInfo != null && msg.playerId == player4.PlayerInfo.PlayerId)
         {
             player4.OnPostShowCards(msg);
+            // 播放音效
+            soundPlayer.PlayeNNSound(4, msg.nntype);
         }
         
         if (player5.PlayerInfo != null && msg.playerId == player5.PlayerInfo.PlayerId)
         {
             player5.OnPostShowCards(msg);
+            // 播放音效
+            soundPlayer.PlayeNNSound(5, msg.nntype);
         }
 
         if (msg.playerId == playerSelf.PlayerInfo.PlayerId)
         {
             playerSelf.OnPostShowCards(msg);
             // 播放音效
-            soundPlayer.PlayeNNSound(msg.nntype);
+            soundPlayer.PlayeNNSound(1, msg.nntype);
         }
     }
 

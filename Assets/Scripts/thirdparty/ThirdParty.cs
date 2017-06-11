@@ -6,10 +6,13 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.IO;
 using netty;
+using UnityEngine.UI;
 
 public class ThirdParty : MonoBehaviour
 {
     public HomeController controller = null;
+
+    private int playerId = 1001;
 
 #if UNITY_IPHONE
     [DllImport("__Internal")]
@@ -61,7 +64,7 @@ public class ThirdParty : MonoBehaviour
     }
 #endif
 
-    public void NomalLogin(int playerid, string token = "")
+    public void NomalLogin(string token = "")
     {
         if (PPSocket.GetInstance().Connect(controller))
         {
@@ -76,7 +79,7 @@ public class ThirdParty : MonoBehaviour
             }
             else
             {
-                login.playerid = playerid;
+                login.playerid = playerId;
             }
             req.loginReq = login;
 
@@ -97,15 +100,15 @@ public class ThirdParty : MonoBehaviour
     }
     public void ThirdPartyLogin()
     {
-        #if UNITY_IPHONE 
-            Debug.logger.Log("IOS准备拉取微信授权登录！");
-            weixinLoginByIos();
+#if UNITY_IPHONE 
+        Debug.logger.Log("IOS准备拉取微信授权登录！");
+        weixinLoginByIos();
 #elif UNITY_ANDROID
         Debug.logger.Log("Android准备拉取微信授权登录！");
-            AndroidLogin();
-        #elif UNITY_EDITOR_WIN
-        NomalLogin(UnityEngine.Random.Range(900000, 999999), "001A2PM81o49rT1uFSO81nrXM81A2PMU");
-        #endif
+        AndroidLogin();
+#elif UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
+        NomalLogin();
+#endif
     }
 
     public void ThirdPartyShare(string title, string des)
@@ -184,5 +187,10 @@ public class ThirdParty : MonoBehaviour
             // 分享回调
             controller.ShowTips("分享成功");
         }
+    }
+
+    public void InputPlayerId(InputField input)
+    {
+        int.TryParse(input.text, out playerId);
     }
 }

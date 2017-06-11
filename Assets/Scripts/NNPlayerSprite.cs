@@ -17,6 +17,8 @@ public class NNPlayerSprite : MonoBehaviour
     public Image nnType;
     public Image stake;
     public GameObject ok;
+    public SoundPlayer soundPlayer;
+
     private Dictionary<int, CardSprite> pokers = new Dictionary<int, CardSprite>();
 
     private ClientPlayerInfo playerInfo;
@@ -46,7 +48,7 @@ public class NNPlayerSprite : MonoBehaviour
                 playerName.text = playerInfo.Name;
                 playerId.text = "ID:" + playerInfo.PlayerId;
                 playerScore.text = "0";
-                if (playerInfo.HeadIconUrl == "")
+                if (playerInfo.HeadIconUrl == null || playerInfo.HeadIconUrl.Length == 0)
 				{
 					playerInfo.HeadIconUrl = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492235773979&di=42b5ddb3d50d6ea32fafee903833c44c&imgtype=0&src=http%3A%2F%2Fwenwen.soso.com%2Fp%2F20110825%2F20110825115928-858187777.jpg";
                 }
