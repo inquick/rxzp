@@ -60,8 +60,7 @@ public class CreateNNMenu : MonoBehaviour
         notSelect = text20.color;
         selected = text10.color;
 
-        needKey.text = 1 + " 张";
-        leaveKey.text = 99 + " 张";
+        RefreshKeyNum();
 
         Debug.Log("CreateMenu Start success!");
     }
