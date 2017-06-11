@@ -122,8 +122,10 @@ public class NNRoomSprite : MonoBehaviour
         roomId.text = m_roomId.ToString();
         playerSelf.PlayerInfo = self;
         currentCount.text = "1";
-        
+
         operations.ShowMenuGroup(NNOperationGroup.NNOG_Play);
+
+        backHome.gameObject.SetActive(true);
 
         InitPlayerUI();
     }
@@ -155,6 +157,7 @@ public class NNRoomSprite : MonoBehaviour
             cpi.CopyFrom(p);
             BindPlayerInfoToSprite(cpi);
         }
+        backHome.gameObject.SetActive(false);
     }
 
     public void OnPostDealResp(PostNNDealResp msg)
@@ -214,11 +217,15 @@ public class NNRoomSprite : MonoBehaviour
     public void OnStartGame()
     {
         operations.ShowMenuGroup(NNOperationGroup.NNOG_None);
+
+        backHome.gameObject.SetActive(true);
     }
 
     public void OnPostStartGame()
     {
         operations.ShowMenuGroup(NNOperationGroup.NNOG_Ready);
+
+        backHome.gameObject.SetActive(true);
     }
 
     public void OnShowCardsResp(NNShowCardsResp msg)
@@ -460,5 +467,53 @@ public class NNRoomSprite : MonoBehaviour
     public void HideChatChooseWnd()
     {
         chatChooseWnd.SetActive(false);
+    }
+
+    public void OnPostUnusualQuit(PostUnusualQuit msg)
+    {
+        if (player2.PlayerInfo != null && msg.playerId == player2.PlayerInfo.PlayerId)
+        {
+            player2.OnPostUnusualQuit();
+        }
+        if (player3.PlayerInfo != null && msg.playerId == player3.PlayerInfo.PlayerId)
+        {
+            player3.OnPostUnusualQuit();
+        }
+        if (player4.PlayerInfo != null && msg.playerId == player4.PlayerInfo.PlayerId)
+        {
+            player4.OnPostUnusualQuit();
+        }
+        if (player5.PlayerInfo != null && msg.playerId == player5.PlayerInfo.PlayerId)
+        {
+            player5.OnPostUnusualQuit();
+        }
+        if (playerSelf.PlayerInfo != null && msg.playerId == playerSelf.PlayerInfo.PlayerId)
+        {
+            playerSelf.OnPostUnusualQuit();
+        }
+    }
+
+    public void OnPostPlayerOnline(PostPlayerOnline msg)
+    {
+        if (player2.PlayerInfo != null && msg.playerId == player2.PlayerInfo.PlayerId)
+        {
+            player2.OnPostPlayerOnline();
+        }
+        if (player3.PlayerInfo != null && msg.playerId == player3.PlayerInfo.PlayerId)
+        {
+            player3.OnPostPlayerOnline();
+        }
+        if (player4.PlayerInfo != null && msg.playerId == player4.PlayerInfo.PlayerId)
+        {
+            player4.OnPostPlayerOnline();
+        }
+        if (player5.PlayerInfo != null && msg.playerId == player5.PlayerInfo.PlayerId)
+        {
+            player5.OnPostPlayerOnline();
+        }
+        if (playerSelf.PlayerInfo != null && msg.playerId == playerSelf.PlayerInfo.PlayerId)
+        {
+            playerSelf.OnPostPlayerOnline();
+        }
     }
 }

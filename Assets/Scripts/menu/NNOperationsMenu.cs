@@ -91,7 +91,7 @@ public class NNOperationsMenu : MonoBehaviour
     // 邀请微信好友
     private void Invite()
     {
-        thirdParty.ThirdPartyShare("瑞星牛牛，房号：" + room.GetRoomId + "(" + room.GameCounts + "局AA开房)", "轮庄 扣" + (room.GameCounts / 10) + "张 最多5人");
+        thirdParty.ThirdPartyShare("瑞星牛牛，房号：" + room.GetRoomId + "(" + room.GameCounts + "局AA开房)", "轮庄 扣" + (room.GameCounts / 10) + "张 最多5人", 1);
     }
 
     // 开始游戏

@@ -1,5 +1,5 @@
 package netty;
-option java_package = "com.rxqp.dn.protobuf";
+option java_package = "com.rxqp.protobuf";
 option java_outer_classname = "DdzProto";
 
 enum MESSAGE_ID{
@@ -56,6 +56,11 @@ enum MESSAGE_ID{
 	
 	// 退出游戏
 	msg_SignOutReq = 47;
+	//客户端异常退出后，再进入之前游戏房间请求
+	msg_ReEntryNNRoomReq = 48;
+	msg_PostUnusualQuit = 49;
+	// 断线重连后，广播上线消息给房间其他玩家
+	msg_PostPlayerOnline = 50;
 }
 
 enum NNType
@@ -130,6 +135,9 @@ message MessageInfo{
 	
 	// 退出游戏
 	optional SignOutReq signOutReq = 48;
+	optional ReEntryNNRoomReq reEntryNNRoomReq = 49;
+	optional PostUnusualQuit postUnusualQuit = 50;
+	optional PostPlayerOnline postPlayerOnline = 51;
 }
 
 //1、登录信息
@@ -157,6 +165,10 @@ message LoginResp{
 	required PlayerBaseInfo playerBaseInfo = 1;
 	// 分享时跳转的连接
     optional string shareurl = 2;
+	//玩家状态(0:正常 1:在牛牛游戏中 2:在斗地主游戏中
+	required int32 playerState = 3;
+	//房间id
+	optional int32 roomId = 4;
 }
 
 //3、创建房间请求,type=1表示房主出房费，type=2表示进入房间者均摊房费
@@ -207,6 +219,8 @@ message Player{
 	// 如果是斗地主则是地主，如果是牛牛则是庄家
 	required bool isDz = 5;
 	optional int32 order = 6;
+	// 玩家是否在线，重进房间时需要
+	optional bool isOnline = 7;
 }
 
 //扑克信息
@@ -492,4 +506,23 @@ message PostSendSoundResp
 message SignOutReq
 {
 	required int32 playerid = 1;
+}
+
+// 49、异常退出游戏后，再进入推出前游戏房间请求
+message ReEntryNNRoomReq
+{
+	required int32 roomId = 1;
+	required int32 playerId = 3;
+}
+
+// 50、广播通知其他玩家，某玩家异常掉线
+message PostUnusualQuit
+{
+	required int32 playerId = 1;
+}
+
+// 51、广播通知其他玩家，离线玩家已经上线
+message PostPlayerOnline
+{
+	required int32 playerId = 1;
 }

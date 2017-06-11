@@ -25,8 +25,9 @@ public class ThirdParty : MonoBehaviour
     /// <param name="url"> 链接地址 </param>
     /// <param name="title"> 标题 </param>
     /// <param name="des"> 描述</param>
+    /// <param name="sharetype"> 分享类型 0 分享给朋友圈， 1 分享到好友 </param>
     [DllImport("__Internal")]
-    private static extern void WXShareToFriend(string url, string title, string des);
+    private static extern void WXShareToFriend(string url, string title, string des, string sharetype);
 
     /// <summary>
     /// 截图分享
@@ -41,15 +42,16 @@ public class ThirdParty : MonoBehaviour
         AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
         jo.Call("weiLogin");
     }
-    private void WXShareToFriend(string url, string title, string des)
+    private void WXShareToFriend(string url, string title, string des, string sharetype)
     {
         AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
         // 参数  
-        string[] mObject = new string[3];
+        string[] mObject = new string[4];
         mObject[0] = url;
         mObject[1] = title;
         mObject[2] = des;
+        mObject[3] = sharetype;
         jo.Call("WXShareToFriend", mObject);
     }
 
@@ -70,7 +72,6 @@ public class ThirdParty : MonoBehaviour
         {
             MessageInfo req = new MessageInfo();
             LoginReq login = new LoginReq();
-            PlayerBaseInfo playerBaseInfo = new PlayerBaseInfo();
             req.messageId = MESSAGE_ID.msg_LoginReq;
             login.code = "";
             if (token.Length > 0)
@@ -111,14 +112,14 @@ public class ThirdParty : MonoBehaviour
 #endif
     }
 
-    public void ThirdPartyShare(string title, string des)
+    public void ThirdPartyShare(string title, string des, int sharetype)
     {
 #if UNITY_IPHONE 
         Debug.logger.Log("IOS准备分享！");
-        WXShareToFriend(controller.ShareUrl, title, des);
+        WXShareToFriend(controller.ShareUrl, title, des, sharetype.ToString());
 #elif UNITY_ANDROID
         Debug.logger.Log("Android准备分享！");
-        WXShareToFriend(controller.ShareUrl, title, des);
+        WXShareToFriend(controller.ShareUrl, title, des, sharetype.ToString());
 #endif
     }
 

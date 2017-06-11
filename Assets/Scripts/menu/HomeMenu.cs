@@ -15,6 +15,9 @@ public class HomeMenu : MonoBehaviour
     private ThirdParty thirdParty = null;
 
     public Button quit;
+    public GameObject shareTypePanel = null;
+    public Button shareToFriends = null;
+    public Button shareToCircle = null;
 
     // Use this for initialization
     void Start()
@@ -41,6 +44,9 @@ public class HomeMenu : MonoBehaviour
 
         controller = GameObject.Find("UIRoot").GetComponent<HomeController>();
         thirdParty = GameObject.Find("UIRoot").GetComponent<ThirdParty>();
+
+        shareToFriends.onClick.AddListener(ShareToFriends);
+        shareToCircle.onClick.AddListener(ShareToTimeline);
     }
 
     /// <summary>
@@ -102,7 +108,18 @@ public class HomeMenu : MonoBehaviour
     /// </summary>
     void ShareBtn()
     {
-        thirdParty.ThirdPartyShare("游戏邀请", "玩家" + controller.PlayerName + " 口令：" + controller.PlayerId + " 邀请你加入【瑞星紙牌】！");
+        shareTypePanel.SetActive(true);
+    }
+
+    void ShareToFriends()
+    {
+        shareTypePanel.SetActive(false);
+        thirdParty.ThirdPartyShare("游戏邀请", "玩家" + controller.PlayerName + " 口令：" + controller.PlayerId + " 邀请你加入【瑞星紙牌】！", 1);
+    }
+    void ShareToTimeline()
+    {
+        shareTypePanel.SetActive(false);
+        thirdParty.ThirdPartyShare("游戏邀请", "玩家" + controller.PlayerName + " 口令：" + controller.PlayerId + " 邀请你加入【瑞星紙牌】！", 0);
     }
     
     /// <summary>

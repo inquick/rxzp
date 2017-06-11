@@ -445,6 +445,33 @@ namespace netty
       get { return _signOutReq; }
       set { _signOutReq = value; }
     }
+
+    private netty.ReEntryNNRoomReq _reEntryNNRoomReq = null;
+    [global::ProtoBuf.ProtoMember(49, IsRequired = false, Name=@"reEntryNNRoomReq", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public netty.ReEntryNNRoomReq reEntryNNRoomReq
+    {
+      get { return _reEntryNNRoomReq; }
+      set { _reEntryNNRoomReq = value; }
+    }
+
+    private netty.PostUnusualQuit _postUnusualQuit = null;
+    [global::ProtoBuf.ProtoMember(50, IsRequired = false, Name=@"postUnusualQuit", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public netty.PostUnusualQuit postUnusualQuit
+    {
+      get { return _postUnusualQuit; }
+      set { _postUnusualQuit = value; }
+    }
+
+    private netty.PostPlayerOnline _postPlayerOnline = null;
+    [global::ProtoBuf.ProtoMember(51, IsRequired = false, Name=@"postPlayerOnline", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public netty.PostPlayerOnline postPlayerOnline
+    {
+      get { return _postPlayerOnline; }
+      set { _postPlayerOnline = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -538,6 +565,22 @@ namespace netty
     {
       get { return _shareurl; }
       set { _shareurl = value; }
+    }
+    private int _playerState;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"playerState", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int playerState
+    {
+      get { return _playerState; }
+      set { _playerState = value; }
+    }
+
+    private int _roomId = default(int);
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"roomId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int roomId
+    {
+      get { return _roomId; }
+      set { _roomId = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -767,6 +810,15 @@ namespace netty
     {
       get { return _order; }
       set { _order = value; }
+    }
+
+    private bool _isOnline = default(bool);
+    [global::ProtoBuf.ProtoMember(7, IsRequired = false, Name=@"isOnline", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(default(bool))]
+    public bool isOnline
+    {
+      get { return _isOnline; }
+      set { _isOnline = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -1736,6 +1788,64 @@ namespace netty
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ReEntryNNRoomReq")]
+  public partial class ReEntryNNRoomReq : global::ProtoBuf.IExtensible
+  {
+    public ReEntryNNRoomReq() {}
+    
+    private int _roomId;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"roomId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int roomId
+    {
+      get { return _roomId; }
+      set { _roomId = value; }
+    }
+    private int _playerId;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"playerId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int playerId
+    {
+      get { return _playerId; }
+      set { _playerId = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"PostUnusualQuit")]
+  public partial class PostUnusualQuit : global::ProtoBuf.IExtensible
+  {
+    public PostUnusualQuit() {}
+    
+    private int _playerId;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"playerId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int playerId
+    {
+      get { return _playerId; }
+      set { _playerId = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"PostPlayerOnline")]
+  public partial class PostPlayerOnline : global::ProtoBuf.IExtensible
+  {
+    public PostPlayerOnline() {}
+    
+    private int _playerId;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"playerId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int playerId
+    {
+      get { return _playerId; }
+      set { _playerId = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
     [global::ProtoBuf.ProtoContract(Name=@"MESSAGE_ID")]
     public enum MESSAGE_ID
     {
@@ -1879,7 +1989,16 @@ namespace netty
       msg_PostSendSoundResp = 46,
             
       [global::ProtoBuf.ProtoEnum(Name=@"msg_SignOutReq", Value=47)]
-      msg_SignOutReq = 47
+      msg_SignOutReq = 47,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"msg_ReEntryNNRoomReq", Value=48)]
+      msg_ReEntryNNRoomReq = 48,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"msg_PostUnusualQuit", Value=49)]
+      msg_PostUnusualQuit = 49,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"msg_PostPlayerOnline", Value=50)]
+      msg_PostPlayerOnline = 50
     }
   
     [global::ProtoBuf.ProtoContract(Name=@"NNType")]

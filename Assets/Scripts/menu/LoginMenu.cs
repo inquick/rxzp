@@ -10,9 +10,15 @@ public class LoginMenu : MonoBehaviour
 {
     public ThirdParty thirdParty;
     public Button loginBtn;
+    public GameObject input;
+    public GameObject chooseServer;
     // Use this for initialization
     void Start()
     {
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
+        input.SetActive(true);
+        chooseServer.SetActive(true);
+#endif
         //int playerid = PlayerPrefs.GetInt("PlayerId");
         //if (playerid > 0)
         //{

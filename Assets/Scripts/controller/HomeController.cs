@@ -31,6 +31,8 @@ public class HomeController : MonoBehaviour
 
     private string shareUrl = null;
 
+    private bool m_IsGameOver = false;
+
     public string ShareUrl
     {
         set { shareUrl = value; }
@@ -246,7 +248,6 @@ public class HomeController : MonoBehaviour
                 LoadingEnd();
                 ddzRoom.SelfPlayer.Order = 1;
                 nnRoom.OnCreateRoom(ddzRoom.SelfPlayer, msg.createNNRoomResp.roomId);
-                nnRoom.backHome.gameObject.SetActive(true);
 
                 // 播放牛牛背景音乐
                 _soundPlayer.PlayNNBackgroundMusic();
@@ -265,7 +266,6 @@ public class HomeController : MonoBehaviour
                 LoadingEnd();
                 // 进入牛牛游戏房间
                 _gameType = GameType.GT_NN;
-                nnRoom.backHome.gameObject.SetActive(false);
             }
             break;
         case MESSAGE_ID.msg_PostNNEntryRoom:
@@ -310,6 +310,12 @@ public class HomeController : MonoBehaviour
         case MESSAGE_ID.msg_PostSendSoundResp:
             nnRoom.OnPostSendSoundResp(msg.postSendSoundResp);
             break;
+        case MESSAGE_ID.msg_PostUnusualQuit:
+            nnRoom.OnPostUnusualQuit(msg.postUnusualQuit);
+            break;
+        case MESSAGE_ID.msg_PostPlayerOnline:
+            nnRoom.OnPostPlayerOnline(msg.postPlayerOnline);
+            break;
 		default:
 			Debug.LogError ("Not Handled MsgId = " + msg.messageId);
             LoadingEnd();
@@ -352,11 +358,9 @@ public class HomeController : MonoBehaviour
         {
             PlayerPrefs.SetInt("PlayerId", msg.playerBaseInfo.ID);
             ddzRoom.SelfPlayer.OnLoginResp(msg.playerBaseInfo);
-            OpenWindow(WINDOW_ID.WINDOW_ID_HOME);
             _selfInfo.RefreshSelfInfos(ddzRoom.SelfPlayer);
             // 播放斗地主背景音乐
             _soundPlayer.PlayWelcomeMusic();
-            Debug.Log("登录成功！！！");
             if (msg.shareurl != null && msg.shareurl.Length > 0 && msg.shareurl != "null")
             {
                 shareUrl = msg.shareurl;
@@ -365,6 +369,32 @@ public class HomeController : MonoBehaviour
             {
                 Debug.Log("msg.shareurl is null !!!");
                 shareUrl = "http://rxcard.worldwalker.cn/wyzn/index.do";
+            }
+            if (msg.playerState == 0)
+            {
+                OpenWindow(WINDOW_ID.WINDOW_ID_HOME);
+                Debug.Log("登录成功！！！");
+                LoadingEnd();
+            }
+            else if (msg.playerState == 1)
+            {
+                CloseWindow(WINDOW_ID.WINDOW_ID_HOME);
+                Debug.Log("玩家还在牛牛游戏中，准备进入牛牛游戏！！！");
+
+                MessageInfo req = new MessageInfo();
+                ReEntryNNRoomReq reEnterNN = new ReEntryNNRoomReq();
+                req.messageId = MESSAGE_ID.msg_ReEntryNNRoomReq;
+                reEnterNN.playerId = msg.playerBaseInfo.ID;
+                reEnterNN.roomId = msg.roomId;
+                req.reEntryNNRoomReq = reEnterNN;
+
+                PPSocket.GetInstance().SendMessage(req);
+
+            }
+            else if (msg.playerState == 2)
+            {
+                CloseWindow(WINDOW_ID.WINDOW_ID_HOME);
+                Debug.Log("玩家还在斗地主游戏中，准备进入斗地主游戏！！！");
             }
         }
         else
@@ -375,8 +405,8 @@ public class HomeController : MonoBehaviour
             // 打开登录界面
             OpenWindow(WINDOW_ID.WINDOW_ID_LOGIN);
             Debug.LogError("登录失败！！！");
+            LoadingEnd();
         }
-        LoadingEnd();
     }
 
     /// <summary>
@@ -638,53 +668,39 @@ public class HomeController : MonoBehaviour
     /// <param name="msg"></param>
     private void Settlement(MessageInfo msg)
     {
-        if (msg.settlementInfo.isOver)
+        OpenWindow(WINDOW_ID.WINDOW_ID_SETTLEMENT_ONE);
+        m_IsGameOver = msg.settlementInfo.isOver;
+        switch (_gameType)
         {
-
-            switch (_gameType)
-            {
-                case GameType.GT_DDZ:
+            case GameType.GT_DDZ:
+                {
+                    foreach (SettlementData data in msg.settlementInfo.players)
                     {
-                        OpenWindow(WINDOW_ID.WINDOW_ID_DDZSETTLEMENT_FINAL);
-                        settlementFinal.SetSettlementUI(ddzRoom, msg.settlementInfo);
-                    }
-                    break;
-                case GameType.GT_NN:
-                    {
-                        OpenWindow(WINDOW_ID.WINDOW_ID_NNSETTLEMENT_FINAL);
-                        nnSettlementFinal.SetSettlementUI(nnRoom, msg.settlementInfo);
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-        }else
-        {
-            OpenWindow(WINDOW_ID.WINDOW_ID_SETTLEMENT_ONE);
-            switch (_gameType)
-            {
-                case GameType.GT_DDZ:
-                    {
-                        foreach (SettlementData data in msg.settlementInfo.players)
+                        ddzRoom.GetPlayer(data.ID).Score = data.finalscore;
+                        if (data.ID == ddzRoom.SelfPlayer.PlayerId)
                         {
-                            ddzRoom.GetPlayer(data.ID).Score = data.finalscore;
-                            if (data.ID == ddzRoom.SelfPlayer.PlayerId)
-                            {
-                                settlementOne.SetSettlementUI(data.gotscore);
-                            }
+                            settlementOne.SetSettlementUI(data.gotscore);
                         }
                     }
-                    break;
-                case GameType.GT_NN:
+
+                    if (m_IsGameOver)
                     {
-                        nnRoom.Settlement(msg.settlementInfo, settlementOne);
+                        settlementFinal.SetSettlementUI(ddzRoom, msg.settlementInfo);
                     }
-                    break;
-                default:
-                    break;
-            }
-            
+                }
+                break;
+            case GameType.GT_NN:
+                {
+                    nnRoom.Settlement(msg.settlementInfo, settlementOne);
+
+                    if (m_IsGameOver)
+                    {
+                        nnSettlementFinal.SetSettlementUI(nnRoom, msg.settlementInfo);
+                    }
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -759,18 +775,32 @@ public class HomeController : MonoBehaviour
         {
             case GameType.GT_DDZ:
                 {
-                    DealRequest();
+                    if (m_IsGameOver)
+                    {
+                        OpenWindow(WINDOW_ID.WINDOW_ID_DDZSETTLEMENT_FINAL);
+                    }
+                    else
+                    {
+                        DealRequest();
+                    }
                 }
                 break;
             case GameType.GT_NN:
                 {
-                    nnRoom.Again();
+                    if (m_IsGameOver)
+                    {
+                        OpenWindow(WINDOW_ID.WINDOW_ID_NNSETTLEMENT_FINAL);
+                    }
+                    else
+                    {
+                        nnRoom.Again();
+                    }
                 }
                 break;
             default:
                 break;
         }
-
+        m_IsGameOver = false;
     }
     public void Quit()
     {

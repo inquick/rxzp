@@ -17,7 +17,7 @@ public class NNPlayerSprite : MonoBehaviour
     public Image nnType;
     public Image stake;
     public GameObject ok;
-    public SoundPlayer soundPlayer;
+    public GameObject offline;
 
     private Dictionary<int, CardSprite> pokers = new Dictionary<int, CardSprite>();
 
@@ -60,6 +60,8 @@ public class NNPlayerSprite : MonoBehaviour
                 stake.gameObject.SetActive(false);
 
                 this.gameObject.SetActive(true);
+
+                offline.SetActive(!playerInfo.GetIsOnline);
             }
         }
         get { return playerInfo; }
@@ -70,6 +72,7 @@ public class NNPlayerSprite : MonoBehaviour
         pokerContainer.SetActive(false);
         nnType.gameObject.SetActive(false);
         stake.gameObject.SetActive(false);
+        offline.SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -168,6 +171,7 @@ public class NNPlayerSprite : MonoBehaviour
             banker.SetActive(false);
             pokerContainer.SetActive(false);
             nnType.gameObject.SetActive(false);
+            offline.SetActive(false);
         }
     }
 
@@ -188,5 +192,15 @@ public class NNPlayerSprite : MonoBehaviour
         image.sprite = sprite;
         playerIcon.gameObject.SetActive(true);
         playerInfo.HeadIcon = sprite;
+    }
+
+    public void OnPostUnusualQuit()
+    {
+        offline.SetActive(true);
+    }
+
+    public void OnPostPlayerOnline()
+    {
+        offline.SetActive(false);
     }
 }
