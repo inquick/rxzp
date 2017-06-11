@@ -313,7 +313,7 @@ message MsgInfo{
 message PostDealOver{
 }
 
-//23、创建牛牛房间请求,type=1表示房费房主出，type=2表示房费AA
+//23、创建牛牛房间请求,type=1表示房费房主出，type=2表示房费AA，type=3表示房费赢家出
 message CreateNNRoomReq
 {
     required int32 games = 1;

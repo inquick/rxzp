@@ -123,7 +123,7 @@ public class CreateNNMenu : MonoBehaviour
         }
         else
         {
-            text10.color = notSelect;
+            text20.color = notSelect;
         }
     }
     void CheckNum30(bool isSelected)
