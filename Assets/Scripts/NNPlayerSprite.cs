@@ -192,7 +192,7 @@ public class NNPlayerSprite : MonoBehaviour
 
     public void ShowBanker(int banderid)
     {
-        if (banderid == playerInfo.PlayerId)
+        if (playerInfo !=null && banderid == playerInfo.PlayerId)
         {
             banker.SetActive(true);
         }
