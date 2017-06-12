@@ -383,11 +383,11 @@ message PostNNDealResp{
 	// 发牌、先做发3张的
 	repeated int32 pokers = 2;
 	// 房间已完游戏局数
-	optional int32 playedGames = 3;
+	required int32 playedGames = 3;
 	// 房间总局数
-	optional int32 totalGames = 4;
-	// 是否是庄家
-	optional bool isBanker = 5;
+	required int32 totalGames = 4;
+	// 庄家id
+	required int32 bankerId = 5;
 }
 
 // 33、 牛牛下注

@@ -22,12 +22,7 @@ public class NNPlayerSprite : MonoBehaviour
     private Dictionary<int, CardSprite> pokers = new Dictionary<int, CardSprite>();
 
     private ClientPlayerInfo playerInfo;
-    private bool isBanker = false;
 
-    public bool IsBanker
-    {
-        get { return isBanker; }
-    }
     public ClientPlayerInfo PlayerInfo
     {
         set
@@ -91,15 +86,6 @@ public class NNPlayerSprite : MonoBehaviour
         
         nnType.gameObject.SetActive(false);
         stake.gameObject.SetActive(false);
-        isBanker = msg.isBanker;
-        if (msg.isBanker)
-        {
-            banker.SetActive(true);
-        }
-        else
-        {
-            banker.SetActive(false);
-        }
     }
 
     // 显示玩家UI信息
@@ -202,5 +188,17 @@ public class NNPlayerSprite : MonoBehaviour
     public void OnPostPlayerOnline()
     {
         offline.SetActive(false);
+    }
+
+    public void ShowBanker(int banderid)
+    {
+        if (banderid == playerInfo.PlayerId)
+        {
+            banker.SetActive(true);
+        }
+        else
+        {
+            banker.SetActive(false);
+        }
     }
 }

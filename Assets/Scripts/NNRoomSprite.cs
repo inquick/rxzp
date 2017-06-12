@@ -171,11 +171,20 @@ public class NNRoomSprite : MonoBehaviour
         player3.ShowCardBack();
         player4.ShowCardBack();
         player5.ShowCardBack();
+       
 
-        if (!playerSelf.IsBanker)
+        if (msg.playerId != msg.bankerId)
         {
+            // 非庄家
             operations.ShowMenuGroup(NNOperationGroup.NNOG_Yafen);
         }
+
+        // 庄家
+        playerSelf.ShowBanker(msg.bankerId);
+        player2.ShowBanker(msg.bankerId);
+        player3.ShowBanker(msg.bankerId);
+        player4.ShowBanker(msg.bankerId);
+        player5.ShowBanker(msg.bankerId);
 
         // 影藏掉OK手势
         player2.ShowOk(false);
@@ -203,12 +212,12 @@ public class NNRoomSprite : MonoBehaviour
             player3.ShowStake(msg.point);
         }
         
-        if (player3.PlayerInfo != null && msg.playerid == player4.PlayerInfo.PlayerId)
+        if (player4.PlayerInfo != null && msg.playerid == player4.PlayerInfo.PlayerId)
         {
             player4.ShowStake(msg.point);
         }
         
-        if (player3.PlayerInfo != null && msg.playerid == player5.PlayerInfo.PlayerId)
+        if (player5.PlayerInfo != null && msg.playerid == player5.PlayerInfo.PlayerId)
         {
             player5.ShowStake(msg.point);
         }

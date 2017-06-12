@@ -1421,32 +1421,26 @@ namespace netty
       get { return _pokers; }
     }
   
-
-    private int _playedGames = default(int);
-    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"playedGames", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(default(int))]
+    private int _playedGames;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"playedGames", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public int playedGames
     {
       get { return _playedGames; }
       set { _playedGames = value; }
     }
-
-    private int _totalGames = default(int);
-    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"totalGames", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(default(int))]
+    private int _totalGames;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = true, Name=@"totalGames", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public int totalGames
     {
       get { return _totalGames; }
       set { _totalGames = value; }
     }
-
-    private bool _isBanker = default(bool);
-    [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"isBanker", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    [global::System.ComponentModel.DefaultValue(default(bool))]
-    public bool isBanker
+    private int _bankerId;
+    [global::ProtoBuf.ProtoMember(5, IsRequired = true, Name=@"bankerId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int bankerId
     {
-      get { return _isBanker; }
-      set { _isBanker = value; }
+      get { return _bankerId; }
+      set { _bankerId = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
