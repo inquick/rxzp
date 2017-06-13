@@ -92,6 +92,10 @@ public class PPSocket
         while (true)
         {
             Debug.Log(" socketCycle! ");
+            if (clientSocket == null)
+            {
+                return;
+            }
             if (!clientSocket.Connected)
             {
                 //与服务器断开连接跳出循环     
