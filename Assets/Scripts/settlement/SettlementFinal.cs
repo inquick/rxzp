@@ -33,7 +33,7 @@ public class SettlementFinal : MonoBehaviour
     void CloseWnd()
     {
         transform.gameObject.SetActive(false);
-        controller.OpenWindow(WINDOW_ID.WINDOW_ID_HOME);
+        controller.BackHome();
     }
 
     public void SetSettlementUI(ClientRoomInfo room, SettlementInfo info)

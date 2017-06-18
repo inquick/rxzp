@@ -472,6 +472,15 @@ namespace netty
       get { return _postPlayerOnline; }
       set { _postPlayerOnline = value; }
     }
+
+    private netty.PostPlayerOffline _postPlayerOffline = null;
+    [global::ProtoBuf.ProtoMember(52, IsRequired = false, Name=@"postPlayerOffline", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public netty.PostPlayerOffline postPlayerOffline
+    {
+      get { return _postPlayerOffline; }
+      set { _postPlayerOffline = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -624,7 +633,7 @@ namespace netty
     public CreateRoomResp() {}
     
     private int _roomId;
-    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"roomId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"roomId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public int roomId
     {
       get { return _roomId; }
@@ -648,7 +657,7 @@ namespace netty
       set { _roomId = value; }
     }
     private int _playerId;
-    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"playerId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"playerId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public int playerId
     {
       get { return _playerId; }
@@ -665,14 +674,14 @@ namespace netty
     public EntryRoomResp() {}
     
     private netty.RoomInfo _roomInfo;
-    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"roomInfo", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"roomInfo", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public netty.RoomInfo roomInfo
     {
       get { return _roomInfo; }
       set { _roomInfo = value; }
     }
     private int _order;
-    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"order", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"order", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public int order
     {
       get { return _order; }
@@ -755,6 +764,15 @@ namespace netty
       get { return _currentPlayerId; }
       set { _currentPlayerId = value; }
     }
+
+    private int _bankerId = default(int);
+    [global::ProtoBuf.ProtoMember(7, IsRequired = false, Name=@"bankerId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int bankerId
+    {
+      get { return _bankerId; }
+      set { _bankerId = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -819,6 +837,40 @@ namespace netty
     {
       get { return _isOnline; }
       set { _isOnline = value; }
+    }
+    private readonly global::System.Collections.Generic.List<int> _pokerids = new global::System.Collections.Generic.List<int>();
+    [global::ProtoBuf.ProtoMember(8, Name=@"pokerids", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public global::System.Collections.Generic.List<int> pokerids
+    {
+      get { return _pokerids; }
+    }
+  
+
+    private netty.NNType _nntype = netty.NNType.NNT_ERROR;
+    [global::ProtoBuf.ProtoMember(9, IsRequired = false, Name=@"nntype", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(netty.NNType.NNT_ERROR)]
+    public netty.NNType nntype
+    {
+      get { return _nntype; }
+      set { _nntype = value; }
+    }
+
+    private int _stakepoint = default(int);
+    [global::ProtoBuf.ProtoMember(10, IsRequired = false, Name=@"stakepoint", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int stakepoint
+    {
+      get { return _stakepoint; }
+      set { _stakepoint = value; }
+    }
+
+    private netty.NNStatus _status = netty.NNStatus.STATUS_NONE;
+    [global::ProtoBuf.ProtoMember(11, IsRequired = false, Name=@"status", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(netty.NNStatus.STATUS_NONE)]
+    public netty.NNStatus status
+    {
+      get { return _status; }
+      set { _status = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -1296,7 +1348,7 @@ namespace netty
       set { _roomId = value; }
     }
     private int _playerId;
-    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"playerId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"playerId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public int playerId
     {
       get { return _playerId; }
@@ -1313,14 +1365,14 @@ namespace netty
     public EntryNNRoomResp() {}
     
     private netty.RoomInfo _roomInfo;
-    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"roomInfo", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"roomInfo", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public netty.RoomInfo roomInfo
     {
       get { return _roomInfo; }
       set { _roomInfo = value; }
     }
     private int _order;
-    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"order", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"order", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public int order
     {
       get { return _order; }
@@ -1795,7 +1847,7 @@ namespace netty
       set { _roomId = value; }
     }
     private int _playerId;
-    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"playerId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"playerId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public int playerId
     {
       get { return _playerId; }
@@ -1827,6 +1879,23 @@ namespace netty
   public partial class PostPlayerOnline : global::ProtoBuf.IExtensible
   {
     public PostPlayerOnline() {}
+    
+    private int _playerId;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"playerId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int playerId
+    {
+      get { return _playerId; }
+      set { _playerId = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"PostPlayerOffline")]
+  public partial class PostPlayerOffline : global::ProtoBuf.IExtensible
+  {
+    public PostPlayerOffline() {}
     
     private int _playerId;
     [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"playerId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
@@ -1992,7 +2061,10 @@ namespace netty
       msg_PostUnusualQuit = 49,
             
       [global::ProtoBuf.ProtoEnum(Name=@"msg_PostPlayerOnline", Value=50)]
-      msg_PostPlayerOnline = 50
+      msg_PostPlayerOnline = 50,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"msg_PostPlayerOffline", Value=51)]
+      msg_PostPlayerOffline = 51
     }
   
     [global::ProtoBuf.ProtoContract(Name=@"NNType")]
@@ -2040,6 +2112,35 @@ namespace netty
             
       [global::ProtoBuf.ProtoEnum(Name=@"NNT_SPECIAL_BOMEBOME", Value=13)]
       NNT_SPECIAL_BOMEBOME = 13
+    }
+  
+    [global::ProtoBuf.ProtoContract(Name=@"NNStatus")]
+    public enum NNStatus
+    {
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"STATUS_NONE", Value=0)]
+      STATUS_NONE = 0,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"STATUS_CREATE_ROOM", Value=1)]
+      STATUS_CREATE_ROOM = 1,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"STATUS_ENTER_ROOM", Value=2)]
+      STATUS_ENTER_ROOM = 2,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"STATUS_BEGIN_PREPARE", Value=3)]
+      STATUS_BEGIN_PREPARE = 3,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"STATUS_FINISH_PREPARE", Value=4)]
+      STATUS_FINISH_PREPARE = 4,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"STATUS_BEGIN_STAKE", Value=5)]
+      STATUS_BEGIN_STAKE = 5,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"STATUS_BEGIN_SHOWCARDS", Value=6)]
+      STATUS_BEGIN_SHOWCARDS = 6,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"STATUS_PREPARE_NEXT", Value=7)]
+      STATUS_PREPARE_NEXT = 7
     }
   
 }

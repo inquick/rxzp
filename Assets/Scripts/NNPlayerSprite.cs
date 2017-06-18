@@ -54,9 +54,9 @@ public class NNPlayerSprite : MonoBehaviour
                 nnType.gameObject.SetActive(false);
                 stake.gameObject.SetActive(false);
 
-                this.gameObject.SetActive(true);
-
                 offline.SetActive(!playerInfo.GetIsOnline);
+
+                playerScore.text = playerInfo.Score.ToString();
             }
         }
         get { return playerInfo; }
@@ -64,10 +64,11 @@ public class NNPlayerSprite : MonoBehaviour
 
 	// Use this for initialization
 	void Start () {
-        pokerContainer.SetActive(false);
-        nnType.gameObject.SetActive(false);
-        stake.gameObject.SetActive(false);
-        offline.SetActive(false);
+        //pokerContainer.SetActive(false);
+        //nnType.gameObject.SetActive(false);
+        //stake.gameObject.SetActive(false);
+        //offline.SetActive(false);
+        //Debug.LogError("pokers Hide!!!");
 	}
 	
 	// Update is called once per frame
@@ -189,6 +190,10 @@ public class NNPlayerSprite : MonoBehaviour
     {
         offline.SetActive(false);
     }
+    public void OnPostPlayerOffline()
+    {
+        offline.SetActive(true);
+    }
 
     public void ShowBanker(int banderid)
     {
@@ -200,5 +205,38 @@ public class NNPlayerSprite : MonoBehaviour
         {
             banker.SetActive(false);
         }
+    }
+
+    public void ReEnter(Player p, int bankerid)
+    {
+        // 断线重连后恢复场景
+        if (p.pokerids.Count > 0)
+        {
+            pokerContainer.SetActive(true);
+            int index = 1;
+            foreach (int cardId in p.pokerids)
+            {
+                pokers[index].CardId = cardId;
+                ++index;
+            }
+        }
+        if (p.nntype > NNType.NNT_ERROR)
+        {
+            nnType.sprite = ResourceManager.Instance.GetNiuNiuTypeSprite(p.nntype);
+            nnType.SetNativeSize();
+            nnType.gameObject.SetActive(true);
+        }
+
+        if (p.stakepoint > 0)
+        {
+            ShowStake(p.stakepoint);
+        }
+
+        if (bankerid == p.ID)
+        {
+            banker.SetActive(true);
+        }
+
+
     }
 }

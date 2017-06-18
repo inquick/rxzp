@@ -31,9 +31,7 @@ public class NNSettlementFinal : MonoBehaviour
     {
         transform.gameObject.SetActive(false);
         controller.CloseWindow(WINDOW_ID.WINDOW_ID_GAME_NN);
-        controller.OpenWindow(WINDOW_ID.WINDOW_ID_HOME);
-        // 播放斗地主背景音乐
-        controller._soundPlayer.PlayWelcomeMusic();
+        controller.BackHome();
     }
 
     void ShareScreenshot()

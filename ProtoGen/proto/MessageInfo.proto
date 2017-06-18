@@ -61,6 +61,7 @@ enum MESSAGE_ID{
 	msg_PostUnusualQuit = 49;
 	// 断线重连后，广播上线消息给房间其他玩家
 	msg_PostPlayerOnline = 50;
+	msg_PostPlayerOffline = 51;
 }
 
 enum NNType
@@ -79,6 +80,21 @@ enum NNType
 	NNT_SPECIAL_NIUNIU		= 11; //牛牛
 	NNT_SPECIAL_NIUHUA		= 12; //五花牛
 	NNT_SPECIAL_BOMEBOME	= 13; //炸弹
+}
+
+//---------------------------------
+// 牛牛游戏每个玩家阶段状态
+//---------------------------------
+enum NNStatus
+{
+	STATUS_NONE				= 0; // 正常进入，非重进
+	STATUS_CREATE_ROOM		= 1; // 创建房间
+	STATUS_ENTER_ROOM		= 2; // 进入房间
+	STATUS_BEGIN_PREPARE	= 3; // 进入准备状态
+	STATUS_FINISH_PREPARE	= 4; // 准备完毕自动发牌
+	STATUS_BEGIN_STAKE		= 5; // 准备下注
+	STATUS_BEGIN_SHOWCARDS	= 6; // 准备开牌
+	STATUS_PREPARE_NEXT		= 7; // 已经开牌，小局结算完毕，进入下一小局的准备阶段
 }
 
 message MessageInfo{
@@ -138,6 +154,7 @@ message MessageInfo{
 	optional ReEntryNNRoomReq reEntryNNRoomReq = 49;
 	optional PostUnusualQuit postUnusualQuit = 50;
 	optional PostPlayerOnline postPlayerOnline = 51;
+	optional PostPlayerOffline postPlayerOffline = 52;
 }
 
 //1、登录信息
@@ -180,19 +197,19 @@ message CreateRoomReq{
 
 //4、创建房间返回
 message CreateRoomResp{
-    required int32 roomId = 2;
+    required int32 roomId = 1;
 }
 
 //5、进入特定房间请求
 message EntryRoomReq{
     required int32 roomId = 1;
-	required int32 playerId = 3;
+	required int32 playerId = 2;
 }
 
 //6、进入房间返回
 message EntryRoomResp{
-	required RoomInfo roomInfo = 2;
-	required int32 order = 3;
+	required RoomInfo roomInfo = 1;
+	required int32 order = 2;
 }
 
 //7、广播进入房间，开始玩游戏
@@ -208,6 +225,7 @@ message RoomInfo{
 	optional int32 playedGames = 4;
 	optional int32 totalGames = 5;
 	optional int32 currentPlayerId = 6;
+	optional int32 bankerId = 7; // 庄家id
 }
 
 //8、玩家当前信息
@@ -221,6 +239,14 @@ message Player{
 	optional int32 order = 6;
 	// 玩家是否在线，重进房间时需要
 	optional bool isOnline = 7;
+	//玩家当前的扑克ids
+	repeated int32 pokerids = 8;
+	// 如果到了开牌阶段，可能有的玩家已经开牌
+	optional NNType nntype = 9;
+	// 下注分数（如果是下注阶段，可能有的玩家已经下注）
+	optional int32 stakepoint = 10;
+	// 玩家当前状态 （牛牛游戏中的各个阶段状态）
+	optional NNStatus status = 11;
 }
 
 //扑克信息
@@ -343,13 +369,13 @@ message CreateNNRoomResp{
 //25、进入特定房间请求
 message EntryNNRoomReq{
     required int32 roomId = 1;
-	required int32 playerId = 3;
+	required int32 playerId = 2;
 }
 
 //26、进入房间返回
 message EntryNNRoomResp{
-	required RoomInfo roomInfo = 2;
-	required int32 order = 3;
+	required RoomInfo roomInfo = 1;
+	required int32 order = 2;
 }
 
 //27、广播进入房间，开始玩游戏
@@ -512,7 +538,7 @@ message SignOutReq
 message ReEntryNNRoomReq
 {
 	required int32 roomId = 1;
-	required int32 playerId = 3;
+	required int32 playerId = 2;
 }
 
 // 50、广播通知其他玩家，某玩家异常掉线
@@ -523,6 +549,12 @@ message PostUnusualQuit
 
 // 51、广播通知其他玩家，离线玩家已经上线
 message PostPlayerOnline
+{
+	required int32 playerId = 1;
+}
+
+// 52、广播通知其他玩家，离线玩家已经离线
+message PostPlayerOffline
 {
 	required int32 playerId = 1;
 }

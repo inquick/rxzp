@@ -144,20 +144,74 @@ public class NNRoomSprite : MonoBehaviour
     {
         m_roomId = msg.roomInfo.roomId;
         roomId.text = m_roomId.ToString();
-        self.Order = msg.order;
-        playerSelf.PlayerInfo = self;
         currentCount.text = msg.roomInfo.playedGames.ToString();
         totalCount.text = msg.roomInfo.totalGames.ToString();
+
+        foreach(Player p in msg.roomInfo.players)
+        {
+            if (p.ID == self.PlayerId)
+            {
+                ClientPlayerInfo cpi = new ClientPlayerInfo(true);
+                cpi.CopyFrom(p);
+                playerSelf.PlayerInfo = cpi;
+                playerSelf.PlayerInfo.Order = msg.order;
+                backHome.gameObject.SetActive(p.status != NNStatus.STATUS_ENTER_ROOM);
+                if (p.status > NNStatus.STATUS_NONE)
+                {
+                    OnReEnterRoom(p, msg.roomInfo.bankerId);
+
+                    switch (p.status)
+                    {
+                        case NNStatus.STATUS_CREATE_ROOM:
+                            operations.ShowMenuGroup(NNOperationGroup.NNOG_Play);
+                            break;
+                        case NNStatus.STATUS_ENTER_ROOM:
+                        case NNStatus.STATUS_FINISH_PREPARE:
+                            operations.ShowMenuGroup(NNOperationGroup.NNOG_None);
+                            break;
+                        case NNStatus.STATUS_BEGIN_PREPARE:
+                        case NNStatus.STATUS_PREPARE_NEXT:
+                            operations.ShowMenuGroup(NNOperationGroup.NNOG_Ready);
+                            break;
+                        case NNStatus.STATUS_BEGIN_STAKE:
+                            if (p.ID == msg.roomInfo.bankerId)
+                            {
+                                // 庄家不用压分
+                                operations.ShowMenuGroup(NNOperationGroup.NNOG_None);
+                            }
+                            else
+                            {
+                                // 否则就需要压分
+                                operations.ShowMenuGroup(NNOperationGroup.NNOG_Yafen);
+                            }
+                            break;
+                        case NNStatus.STATUS_BEGIN_SHOWCARDS:
+                            operations.ShowMenuGroup(NNOperationGroup.NNOG_Open);
+                            break;
+                        default:
+                            operations.ShowMenuGroup(NNOperationGroup.NNOG_None);
+                            break;
+                    }
+                }
+            }
+        }
 
         InitPlayerUI();
 
         foreach (Player p in msg.roomInfo.players)
         {
+            if (p.ID == playerSelf.PlayerInfo.PlayerId)
+                continue;
+
             ClientPlayerInfo cpi = new ClientPlayerInfo(false);
             cpi.CopyFrom(p);
             BindPlayerInfoToSprite(cpi);
+            // 断线重连处理
+            if (p.status > NNStatus.STATUS_NONE)
+            {
+                OnReEnterRoom(p, msg.roomInfo.bankerId);
+            }
         }
-        backHome.gameObject.SetActive(false);
     }
 
     public void OnPostDealResp(PostNNDealResp msg)
@@ -444,9 +498,9 @@ public class NNRoomSprite : MonoBehaviour
 
     public void OnPostDissolutionResult()
     {
-        controller.OpenWindow(WINDOW_ID.WINDOW_ID_HOME);
         dissolution.Show(false);
         this.gameObject.SetActive(false);
+        controller.BackHome();
     }
 
     public void OnPostSendSoundResp(PostSendSoundResp msg)
@@ -523,6 +577,54 @@ public class NNRoomSprite : MonoBehaviour
         if (playerSelf.PlayerInfo != null && msg.playerId == playerSelf.PlayerInfo.PlayerId)
         {
             playerSelf.OnPostPlayerOnline();
+        }
+    }
+
+    public void OnPostPlayerOffline(PostPlayerOffline msg)
+    {
+        if (player2.PlayerInfo != null && msg.playerId == player2.PlayerInfo.PlayerId)
+        {
+            player2.OnPostPlayerOffline();
+        }
+        if (player3.PlayerInfo != null && msg.playerId == player3.PlayerInfo.PlayerId)
+        {
+            player3.OnPostPlayerOffline();
+        }
+        if (player4.PlayerInfo != null && msg.playerId == player4.PlayerInfo.PlayerId)
+        {
+            player4.OnPostPlayerOffline();
+        }
+        if (player5.PlayerInfo != null && msg.playerId == player5.PlayerInfo.PlayerId)
+        {
+            player5.OnPostPlayerOffline();
+        }
+        if (playerSelf.PlayerInfo != null && msg.playerId == playerSelf.PlayerInfo.PlayerId)
+        {
+            playerSelf.OnPostPlayerOffline();
+        }
+    }
+
+    private void OnReEnterRoom(Player p, int bankerid)
+    {
+        if (player2.PlayerInfo != null && p.ID == player2.PlayerInfo.PlayerId)
+        {
+            player2.ReEnter(p, bankerid);
+        }
+        if (player3.PlayerInfo != null && p.ID == player3.PlayerInfo.PlayerId)
+        {
+            player3.ReEnter(p, bankerid);
+        }
+        if (player4.PlayerInfo != null && p.ID == player4.PlayerInfo.PlayerId)
+        {
+            player4.ReEnter(p, bankerid);
+        }
+        if (player5.PlayerInfo != null && p.ID == player5.PlayerInfo.PlayerId)
+        {
+            player5.ReEnter(p, bankerid);
+        }
+        if (playerSelf.PlayerInfo != null && p.ID == playerSelf.PlayerInfo.PlayerId)
+        {
+            playerSelf.ReEnter(p, bankerid);
         }
     }
 }

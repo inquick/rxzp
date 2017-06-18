@@ -154,6 +154,7 @@ public class ClientPlayerInfo
         this.IsDZ = player.isDz;
         this.order = player.order;
         this.m_isonline = player.isOnline;
+
         leaveCardCount = 0;
         if (headIconUrl == null || headIconUrl.Length == 0 || headIconUrl == "null")
         {

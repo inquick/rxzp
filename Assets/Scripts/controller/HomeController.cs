@@ -219,7 +219,7 @@ public class HomeController : MonoBehaviour
             break;
         case MESSAGE_ID.msg_PostDisbandCheck:
             CloseWindow(WINDOW_ID.WINDOW_ID_GAME_DDZ);
-            OpenWindow(WINDOW_ID.WINDOW_ID_HOME);
+            BackHome();
             break;
         case MESSAGE_ID.msg_PostDiscard:
             OnPostDiscard(msg);
@@ -316,6 +316,9 @@ public class HomeController : MonoBehaviour
         case MESSAGE_ID.msg_PostPlayerOnline:
             nnRoom.OnPostPlayerOnline(msg.postPlayerOnline);
             break;
+        case MESSAGE_ID.msg_PostPlayerOffline:
+            nnRoom.OnPostPlayerOffline(msg.postPlayerOffline);
+            break;
 		default:
 			Debug.LogError ("Not Handled MsgId = " + msg.messageId);
             LoadingEnd();
@@ -345,6 +348,19 @@ public class HomeController : MonoBehaviour
         if (Application.platform == RuntimePlatform.Android && (Input.GetKeyDown(KeyCode.Escape)))
         {
             ShowDialog("是否要现在离开游戏？", Quit);
+        }
+
+        // 程序被切到后台
+        if (Application.runInBackground)
+        {
+            MessageInfo req = new MessageInfo();
+            SignOutReq signout = new SignOutReq();
+            PlayerBaseInfo playerBaseInfo = new PlayerBaseInfo();
+            req.messageId = MESSAGE_ID.msg_SignOutReq;
+            signout.playerid = PlayerId;
+            req.signOutReq = signout;
+
+            PPSocket.GetInstance().SendMessage(req);
         }
 	}
 
@@ -816,5 +832,12 @@ public class HomeController : MonoBehaviour
         PPSocket.GetInstance().OnQuit();
         Application.Quit();
         Debug.Log("退出程序成功！！！");
+    }
+
+    public void BackHome()
+    {
+        _soundPlayer.PlayWelcomeMusic();
+        OpenWindow(WINDOW_ID.WINDOW_ID_HOME);
+        Debug.Log("返回大厅！！！");
     }
 }
