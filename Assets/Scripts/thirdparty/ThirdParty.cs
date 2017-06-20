@@ -160,16 +160,10 @@ public class ThirdParty : MonoBehaviour
                 controller.CloseWindow(WINDOW_ID.WINDOW_ID_LOGIN);
                 // 加载条
                 controller.LoadingStart();
-
-#if UNITY_IPHONE 
-                // 第三方登录
-                controller.ShowTips("微信授权登录，token：" + result[1]);
-#endif
             }
             else
             {
                 controller.ShowTips("网络连接失败，请检查网络是否打开！");
-                Debug.LogError("链接服务器失败！");
             }
         }
         else

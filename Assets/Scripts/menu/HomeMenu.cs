@@ -4,14 +4,15 @@ using System.Text;
 using System.IO;
 using UnityEngine.UI;
 using netty;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// 主场景菜单面板
 /// </summary>
-public class HomeMenu : MonoBehaviour
+public class HomeMenu : MonoBehaviour, IPointerClickHandler
 {
     private HomeController controller = null;
-
     private ThirdParty thirdParty = null;
 
     public Button quit;
@@ -157,5 +158,16 @@ public class HomeMenu : MonoBehaviour
     void Quit()
     {
         controller.ShowDialog("是否要现在离开游戏？", controller.Quit);
+    }
+
+    public void HideShareBtn()
+    {
+        shareTypePanel.SetActive(false);
+    }
+
+    public void OnPointerClick(UnityEngine.EventSystems.PointerEventData eventData)
+    {
+        HideShareBtn();
+        //throw new NotImplementedException();
     }
 }
