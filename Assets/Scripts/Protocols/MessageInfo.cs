@@ -481,6 +481,24 @@ namespace netty
       get { return _postPlayerOffline; }
       set { _postPlayerOffline = value; }
     }
+
+    private netty.ReLoginReq _reLoginReq = null;
+    [global::ProtoBuf.ProtoMember(53, IsRequired = false, Name=@"reLoginReq", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public netty.ReLoginReq reLoginReq
+    {
+      get { return _reLoginReq; }
+      set { _reLoginReq = value; }
+    }
+
+    private netty.ReLoginResp _reLoginResp = null;
+    [global::ProtoBuf.ProtoMember(54, IsRequired = false, Name=@"reLoginResp", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public netty.ReLoginResp reLoginResp
+    {
+      get { return _reLoginResp; }
+      set { _reLoginResp = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -548,6 +566,13 @@ namespace netty
     {
       get { return _cardNum; }
       set { _cardNum = value; }
+    }
+    private int _WxOpenId;
+    [global::ProtoBuf.ProtoMember(5, IsRequired = true, Name=@"WxOpenId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int WxOpenId
+    {
+      get { return _WxOpenId; }
+      set { _WxOpenId = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -1909,6 +1934,47 @@ namespace netty
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ReLoginReq")]
+  public partial class ReLoginReq : global::ProtoBuf.IExtensible
+  {
+    public ReLoginReq() {}
+    
+    private int _playerId;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"playerId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int playerId
+    {
+      get { return _playerId; }
+      set { _playerId = value; }
+    }
+    private int _WxOpenId;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"WxOpenId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int WxOpenId
+    {
+      get { return _WxOpenId; }
+      set { _WxOpenId = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ReLoginResp")]
+  public partial class ReLoginResp : global::ProtoBuf.IExtensible
+  {
+    public ReLoginResp() {}
+    
+    private bool _reLoginSuccessed;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"reLoginSuccessed", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public bool reLoginSuccessed
+    {
+      get { return _reLoginSuccessed; }
+      set { _reLoginSuccessed = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
     [global::ProtoBuf.ProtoContract(Name=@"MESSAGE_ID")]
     public enum MESSAGE_ID
     {
@@ -2064,7 +2130,19 @@ namespace netty
       msg_PostPlayerOnline = 50,
             
       [global::ProtoBuf.ProtoEnum(Name=@"msg_PostPlayerOffline", Value=51)]
-      msg_PostPlayerOffline = 51
+      msg_PostPlayerOffline = 51,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"msg_HeartBeatReq", Value=52)]
+      msg_HeartBeatReq = 52,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"msg_HeartBeatResp", Value=53)]
+      msg_HeartBeatResp = 53,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"msg_ReLoginReq", Value=54)]
+      msg_ReLoginReq = 54,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"msg_ReLoginResp", Value=55)]
+      msg_ReLoginResp = 55
     }
   
     [global::ProtoBuf.ProtoContract(Name=@"NNType")]
