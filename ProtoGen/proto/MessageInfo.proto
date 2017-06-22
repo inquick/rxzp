@@ -185,8 +185,8 @@ message PlayerBaseInfo{
 	optional string imgUrl = 3;
 	// 玩家当前拥有的房卡数量
 	optional int32 cardNum = 4;
-	// 玩家 微信OpenId
-	required int32 WxOpenId = 5;
+	// token,玩家每次登陆成功都生成唯一的字符串
+	required string token = 5;
 }
 
 //2、登录返回信息
@@ -576,8 +576,8 @@ message ReLoginReq
 {
 	// 玩家角色id
 	required int32 playerId = 1;
-	// 玩家 微信OpenId
-	required int32 WxOpenId = 2;
+	// token
+	required string token = 3;
 }
 
 // 56、重连请求响应

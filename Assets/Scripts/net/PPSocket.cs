@@ -66,7 +66,7 @@ public class PPSocket
 			//超时     
 			Closed();
 			Debug.Log("网络连接超时!");
-			return false;
+            return false;
 		}
 		else
 		{
@@ -76,6 +76,8 @@ public class PPSocket
 			socketThread = new Thread(new ThreadStart(ReceiveSorket));
 			socketThread.IsBackground = true;
 			socketThread.Start();
+
+            controller.Connected = true;
 
 			return true;
 		}

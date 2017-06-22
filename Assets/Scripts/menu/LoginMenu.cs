@@ -12,12 +12,20 @@ public class LoginMenu : MonoBehaviour
     public Button loginBtn;
     public GameObject input;
     public GameObject chooseServer;
+    public Toggle chooseHeartBeat;
     // Use this for initialization
     void Start()
     {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
         input.SetActive(true);
         chooseServer.SetActive(true);
+        //chooseHeartBeat.gameObject.SetActive(true);
+
+        //if (PlayerPrefs.HasKey("TestHeartBeat"))
+        //{
+
+        //    chooseHeartBeat.isOn = PlayerPrefs.GetInt("TestHeartBeat") == 1;
+        //}
 #endif
         //int playerid = PlayerPrefs.GetInt("PlayerId");
         //if (playerid > 0)

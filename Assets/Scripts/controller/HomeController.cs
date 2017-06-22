@@ -31,6 +31,8 @@ public class HomeController : MonoBehaviour
 
     private string shareUrl = null;
 
+    private bool TestHeartBeat = false;
+
     private bool m_IsGameOver = false;
 
     public string ShareUrl
@@ -234,8 +236,14 @@ public class HomeController : MonoBehaviour
             OnPostDealOver(msg);
             break;
         case MESSAGE_ID.msg_MsgInfo:
-            ShowTips("ErrorCode : " + msg.msgInfo.type + " " + msg.msgInfo.message);
-            LoadingEnd();
+            if (msg.msgInfo.type == 1004)
+            {
+                SendReLoginReq();
+            }else
+            {
+                ShowTips("ErrorCode : " + msg.msgInfo.type + " " + msg.msgInfo.message);
+                LoadingEnd();
+            }
             break;
         case MESSAGE_ID.msg_SettlementInfo:
             // 结算
@@ -319,6 +327,19 @@ public class HomeController : MonoBehaviour
         case MESSAGE_ID.msg_PostPlayerOffline:
             nnRoom.OnPostPlayerOffline(msg.postPlayerOffline);
             break;
+        case MESSAGE_ID.msg_HeartBeatResp:
+            lastHeartBeatResp = System.DateTime.Now;
+            break;
+        case MESSAGE_ID.msg_ReLoginReq:
+            if (msg.reLoginResp.reLoginSuccessed)
+            {
+                LoadingEnd();
+            }
+            else
+            {
+                SendReLoginReq();
+            }
+            break;
 		default:
 			Debug.LogError ("Not Handled MsgId = " + msg.messageId);
             LoadingEnd();
@@ -350,17 +371,22 @@ public class HomeController : MonoBehaviour
             ShowDialog("是否要现在离开游戏？", Quit);
         }
 
-        // 程序被切到后台
-        if (Application.runInBackground)
+        if (TestHeartBeat)
         {
-            MessageInfo req = new MessageInfo();
-            SignOutReq signout = new SignOutReq();
-            PlayerBaseInfo playerBaseInfo = new PlayerBaseInfo();
-            req.messageId = MESSAGE_ID.msg_SignOutReq;
-            signout.playerid = PlayerId;
-            req.signOutReq = signout;
+            if (connected)
+            {
+                // 心跳 15 秒一次
+                if ((System.DateTime.Now - lastHeartBeat).TotalSeconds > 15)
+                {
+                    HeartBeatReq();
+                }
 
-            PPSocket.GetInstance().SendMessage(req);
+                if ((System.DateTime.Now - lastHeartBeatResp).TotalSeconds > 30)
+                {
+                    // 断线重连
+                    ReLoginReq();
+                }
+            }
         }
 	}
 
@@ -839,5 +865,59 @@ public class HomeController : MonoBehaviour
         _soundPlayer.PlayWelcomeMusic();
         OpenWindow(WINDOW_ID.WINDOW_ID_HOME);
         Debug.Log("返回大厅！！！");
+    }
+
+    private DateTime lastHeartBeat = System.DateTime.Now;
+    private DateTime lastHeartBeatResp = System.DateTime.Now;
+    private bool connected = false;
+
+    public bool Connected
+    {
+        set { connected = value; }
+        get { return connected; }
+    }
+
+    private void HeartBeatReq()
+    {
+        // 心跳
+        MessageInfo req = new MessageInfo();
+        req.messageId = MESSAGE_ID.msg_HeartBeatReq;
+
+        PPSocket.GetInstance().SendMessage(req);
+
+        lastHeartBeat = System.DateTime.Now;
+    }
+
+    private void ReLoginReq()
+    {
+        PPSocket.GetInstance().Closed();
+        if(PPSocket.GetInstance().Connect(this))
+        {
+            SendReLoginReq();
+            lastHeartBeatResp = System.DateTime.Now;
+        }
+        else
+        {
+            ShowTips("网络连接失败，请检查网络是否打开！");
+        }
+    }
+
+    private void SendReLoginReq()
+    {
+        // 收到1004错误时强制登录
+        MessageInfo req = new MessageInfo();
+        ReLoginReq relogin = new ReLoginReq();
+        req.messageId = MESSAGE_ID.msg_ReLoginReq;
+        relogin.playerId = PlayerPrefs.GetInt("PLAYERID");
+        relogin.token = PlayerPrefs.GetString("TOKEN");
+        req.reLoginReq = relogin;
+
+        PPSocket.GetInstance().SendMessage(req);
+    }
+
+    public void ChooseHeartBeat(Toggle tog)
+    {
+        TestHeartBeat = tog.isOn;
+        PlayerPrefs.SetInt("TestHeartBeat", tog.isOn ? 1 : 0);
     }
 }

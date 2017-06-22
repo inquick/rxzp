@@ -39,6 +39,14 @@ public class ClientPlayerInfo
 
     private bool m_isonline = true;
 
+    private int m_wxopenid = 0;
+
+    public int WxOpenId
+    {
+        set { m_wxopenid = value; }
+        get { return m_wxopenid; }
+    }
+
     public bool GetIsOnline
     {
         get { return m_isonline; }
@@ -332,6 +340,10 @@ public class ClientPlayerInfo
         name = info.name;
         headIconUrl = info.imgUrl;
         leaveCardCount = info.cardNum;
+
+        PlayerPrefs.SetInt("PLAYERID", playerId);
+        PlayerPrefs.SetString("TOKEN", info.token);
+
         if (headIconUrl == null || headIconUrl.Length == 0 || headIconUrl == "null")
         {
             headIconUrl = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492235773979&di=42b5ddb3d50d6ea32fafee903833c44c&imgtype=0&src=http%3A%2F%2Fwenwen.soso.com%2Fp%2F20110825%2F20110825115928-858187777.jpg";

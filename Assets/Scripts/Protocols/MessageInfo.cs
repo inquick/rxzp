@@ -567,12 +567,12 @@ namespace netty
       get { return _cardNum; }
       set { _cardNum = value; }
     }
-    private int _WxOpenId;
-    [global::ProtoBuf.ProtoMember(5, IsRequired = true, Name=@"WxOpenId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    public int WxOpenId
+    private string _token;
+    [global::ProtoBuf.ProtoMember(5, IsRequired = true, Name=@"token", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string token
     {
-      get { return _WxOpenId; }
-      set { _WxOpenId = value; }
+      get { return _token; }
+      set { _token = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -1946,12 +1946,12 @@ namespace netty
       get { return _playerId; }
       set { _playerId = value; }
     }
-    private int _WxOpenId;
-    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"WxOpenId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    public int WxOpenId
+    private string _token;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"token", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string token
     {
-      get { return _WxOpenId; }
-      set { _WxOpenId = value; }
+      get { return _token; }
+      set { _token = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
