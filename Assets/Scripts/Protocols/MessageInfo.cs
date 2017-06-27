@@ -567,8 +567,17 @@ namespace netty
       get { return _cardNum; }
       set { _cardNum = value; }
     }
+
+    private string _wxopenid = "";
+    [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"wxopenid", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string wxopenid
+    {
+      get { return _wxopenid; }
+      set { _wxopenid = value; }
+    }
     private string _token;
-    [global::ProtoBuf.ProtoMember(5, IsRequired = true, Name=@"token", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(6, IsRequired = true, Name=@"token", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public string token
     {
       get { return _token; }

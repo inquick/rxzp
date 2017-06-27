@@ -91,7 +91,7 @@ public class HomeMenu : MonoBehaviour, IPointerClickHandler
     /// </summary>
     void Shop()
     {
-        controller.ShowTips("功能尚在研发，暂未开放！");
+        controller.ShowTips("请关注公众号“瑞星纸牌”购买房卡。");
         //controller.OpenWindow(WINDOW_ID.WINDOW_ID_SHOP);
     }
 

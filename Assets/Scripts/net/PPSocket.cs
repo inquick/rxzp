@@ -198,6 +198,10 @@ public class PPSocket
         }
         try
         {
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
+            string debufinfo = msg.ToString();
+            Debug.Log(debufinfo);
+#endif
             MemoryStream ms = new MemoryStream();
             ProtoBuf.Serializer.Serialize<MessageInfo>(ms, msg);
             byte[] data = ms.ToArray();

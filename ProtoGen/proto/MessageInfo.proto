@@ -185,8 +185,10 @@ message PlayerBaseInfo{
 	optional string imgUrl = 3;
 	// 玩家当前拥有的房卡数量
 	optional int32 cardNum = 4;
+	// 
+	optional string wxopenid = 5;
 	// token,玩家每次登陆成功都生成唯一的字符串
-	required string token = 5;
+	required string token = 6;
 }
 
 //2、登录返回信息
