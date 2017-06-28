@@ -16,7 +16,8 @@ public class CreateNNMenu : MonoBehaviour
     public NNRoomSprite room;
 
     private int games = 10;
-    private int payType = 1;
+    private int payType = 2;
+    private BankerType zhuangType = BankerType.BT_NONE;
 
     public Toggle checkNum10 = null;
     public Toggle checkNum20 = null;
@@ -26,6 +27,10 @@ public class CreateNNMenu : MonoBehaviour
     public Toggle checkPayAA = null;
     public Toggle checkPayWin = null;
 
+    public Toggle checkbawang = null;
+    public Toggle checklun = null;
+    public Toggle checkzhuan = null;
+
     public Text text10 = null;
     public Text text20 = null;
     public Text text30 = null;
@@ -34,8 +39,14 @@ public class CreateNNMenu : MonoBehaviour
     public Text textpayAA = null;
     public Text textpayWin = null;
 
+    public Text textbawang = null;
+    public Text textlun = null;
+    public Text textzhuan = null;
+
     public Text needKey = null;
     public Text leaveKey = null;
+
+    public Button createBtn;
 
     private Color notSelect;
     private Color selected;
@@ -44,10 +55,15 @@ public class CreateNNMenu : MonoBehaviour
     //AudioSettings{}
     //}
 
+    private Material greyMaterial = null;
+
     void Start()
     {
         Debug.Log("CreateMenu Start!");
-        transform.Find("bg/CreateBtn").gameObject.GetComponent<Button>().onClick.AddListener(CreateRoom);
+
+        greyMaterial = Resources.Load<Material>("material/Grey");
+
+        createBtn.onClick.AddListener(CreateRoom);
 
         checkNum10.onValueChanged.AddListener(CheckNum10);
         checkNum20.onValueChanged.AddListener(CheckNum20);
@@ -57,8 +73,14 @@ public class CreateNNMenu : MonoBehaviour
         checkPayAA.onValueChanged.AddListener(CheckPayAA);
         checkPayWin.onValueChanged.AddListener(CheckPayWin);
 
+        checkbawang.onValueChanged.AddListener(CheckBawang);
+        checklun.onValueChanged.AddListener(CheckLun);
+        checkzhuan.onValueChanged.AddListener(CheckZhuan);
+
         notSelect = text20.color;
         selected = text10.color;
+
+        RefreshButtonStatus();
 
         RefreshKeyNum();
 
@@ -77,12 +99,13 @@ public class CreateNNMenu : MonoBehaviour
         //}
 
         MessageInfo req = new MessageInfo();
-        CreateNNRoomReq creatRoom = new CreateNNRoomReq();
+        CreateNNRoomReq createRoom = new CreateNNRoomReq();
         req.messageId = MESSAGE_ID.msg_CreateNNRoomReq;
-        creatRoom.games = this.games;
-        creatRoom.type = this.payType;
-        creatRoom.playerId = controller.PlayerId;
-        req.createNNRoomReq = creatRoom;
+        createRoom.games = this.games;
+        createRoom.type = this.payType;
+        createRoom.bankerType = this.zhuangType;
+        createRoom.playerId = controller.PlayerId;
+        req.createNNRoomReq = createRoom;
 
         PPSocket.GetInstance().SendMessage(req);
 
@@ -104,6 +127,7 @@ public class CreateNNMenu : MonoBehaviour
         {
             games = 10;
             text10.color = selected;
+            RefreshButtonStatus();
             RefreshKeyNum();
             Debug.Log("10局");
         }
@@ -118,6 +142,7 @@ public class CreateNNMenu : MonoBehaviour
         {
             games = 20;
             text20.color = selected;
+            RefreshButtonStatus();
             RefreshKeyNum();
             Debug.Log("20局");
         }
@@ -132,6 +157,7 @@ public class CreateNNMenu : MonoBehaviour
         {
             games = 30;
             text30.color = selected;
+            RefreshButtonStatus();
             RefreshKeyNum();
             Debug.Log("30局");
         }
@@ -185,6 +211,47 @@ public class CreateNNMenu : MonoBehaviour
         }
     }
 
+    void CheckBawang(bool isSelected)
+    {
+        if (isSelected)
+        {
+            zhuangType = BankerType.BT_BAWANG;
+            textbawang.color = selected;
+            Debug.Log("霸王庄");
+        }
+        else
+        {
+            textbawang.color = notSelect;
+        }
+    }
+    void CheckLun(bool isSelected)
+    {
+        if (isSelected)
+        {
+            zhuangType = BankerType.BT_LUNZHUANG;
+            textlun.color = selected;
+            Debug.Log("轮庄");
+        }
+        else
+        {
+            textlun.color = notSelect;
+        }
+    }
+
+    void CheckZhuan(bool isSelected)
+    {
+        if (isSelected)
+        {
+            zhuangType = BankerType.BT_ZHUANZHUANG;
+            textzhuan.color = selected;
+            Debug.Log("转庄");
+        }
+        else
+        {
+            textzhuan.color = notSelect;
+        }
+    }
+
     private void RefreshKeyNum()
     {
 
@@ -200,7 +267,7 @@ public class CreateNNMenu : MonoBehaviour
         {
             case 1: // 房主支付
             case 3: // 赢家支付
-                needKeyNum = games / 2;  // (5 * games / 10)
+                needKeyNum = 2 * games / 5;  // (5 * games / 10)
                 break;
             case 2: // AA支付
                 needKeyNum = games / 10;  // (1 * games / 10)
@@ -210,5 +277,117 @@ public class CreateNNMenu : MonoBehaviour
                 break;
         }
         return needKeyNum;
+    }
+
+    private void RefreshButtonStatus()
+    {
+        if (controller.GetLeaveRoomCardNum < 1)
+        {
+            createBtn.enabled = false;
+            createBtn.GetComponent<Image>().material = greyMaterial;
+            checkPayLead.interactable = false;
+            checkPayWin.interactable = false;
+            checkNum20.interactable = false;
+            checkNum30.interactable = false;
+            SetTextGrey(textpayLead, true);
+            SetTextGrey(textpayWin, true);
+            SetTextGrey(text20, true);
+            SetTextGrey(text30, true);
+        }
+        else
+        {
+            createBtn.enabled = true;
+            createBtn.GetComponent<Image>().material = null;
+
+            if (controller.GetLeaveRoomCardNum < 2)
+            {
+                checkNum20.interactable = false;
+                checkNum30.interactable = false;
+                SetTextGrey(text20, true);
+                SetTextGrey(text30, true);
+            }
+            else if (controller.GetLeaveRoomCardNum < 3)
+            {
+                checkNum20.interactable = true;
+                SetTextGrey(text20, false);
+
+                checkNum30.interactable = false;
+                SetTextGrey(text30, true);
+            }
+            else
+            {
+                checkNum20.interactable = true;
+                checkNum30.interactable = true;
+                SetTextGrey(text20, false);
+                SetTextGrey(text30, false);
+            }
+
+            switch (games)
+            {
+                case 10:
+                    if (controller.GetLeaveRoomCardNum < 4)
+                    {
+                        checkPayLead.interactable = false;
+                        checkPayWin.interactable = false;
+                        SetTextGrey(textpayLead, true);
+                        SetTextGrey(textpayWin, true);
+                        checkPayAA.isOn = true;
+                    }
+                    else
+                    {
+                        checkPayLead.interactable = true;
+                        checkPayWin.interactable = true;
+                        SetTextGrey(textpayLead, false);
+                        SetTextGrey(textpayWin, false);
+                    }
+                    break;
+                case 20:
+                    if (controller.GetLeaveRoomCardNum < 8)
+                    {
+                        checkPayLead.interactable = false;
+                        checkPayWin.interactable = false;
+                        SetTextGrey(textpayLead, true);
+                        SetTextGrey(textpayWin, true);
+                        checkPayAA.isOn = true;
+                    }
+                    else
+                    {
+                        checkPayLead.interactable = true;
+                        checkPayWin.interactable = true;
+                        SetTextGrey(textpayLead, false);
+                        SetTextGrey(textpayWin, false);
+                    }
+                    break;
+                case 30:
+                    if (controller.GetLeaveRoomCardNum < 12)
+                    {
+                        checkPayLead.interactable = false;
+                        checkPayWin.interactable = false;
+                        SetTextGrey(textpayLead, true);
+                        SetTextGrey(textpayWin, true);
+                        checkPayAA.isOn = true;
+                    }
+                    else
+                    {
+                        checkPayLead.interactable = true;
+                        checkPayWin.interactable = true;
+                        SetTextGrey(textpayLead, false);
+                        SetTextGrey(textpayWin, false);
+                    }
+                    break;
+            }
+        }
+    }
+
+    private void SetTextGrey(Text txt, bool flag)
+    {
+        if (flag)
+        {
+            txt.color = Color.gray;
+        }
+        else
+        {
+            txt.color = notSelect;
+        }
     }
 }

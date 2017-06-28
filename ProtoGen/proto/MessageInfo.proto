@@ -103,6 +103,21 @@ enum NNStatus
 	STATUS_PREPARE_NEXT		= 7; // 已经开牌，小局结算完毕，进入下一小局的准备阶段
 }
 
+//---------------------------------
+// 庄玩法类型
+//---------------------------------
+enum BankerType
+{
+	// 没有类型
+	BT_NONE				= 0;
+	// 霸王庄
+	BT_BAWANG			= 1;
+	// 轮庄
+	BT_LUNZHUANG		= 2;
+	// 转庄
+	BT_ZHUANZHUANG		= 3;
+}
+
 message MessageInfo{
 	required MESSAGE_ID messageId = 1;
 	optional LoginReq loginReq = 2;
@@ -307,7 +322,10 @@ message SettlementData
 //13、结算信息
 message SettlementInfo{
 	repeated SettlementData players = 1;
+	// 大局是否结束
 	required bool isOver = 2;
+	// 玩家剩余房卡数（大局结束时发，每个玩家都不一样）
+	optional int32 leaveCardNum	= 3;
 }
 
 //14、出牌请求
@@ -370,9 +388,13 @@ message PostDealOver{
 //23、创建牛牛房间请求,type=1表示房费房主出，type=2表示房费AA，type=3表示房费赢家出
 message CreateNNRoomReq
 {
+	// 游戏局数（10、20、30）
     required int32 games = 1;
+	// 房卡扣除方式（1：房主支付	2：AA支付	3：赢家支付）
     required int32 type = 2;
 	required int32 playerId = 3;
+	// 庄玩法类型
+	required BankerType bankerType = 4;
 }
 
 //24、创建房间返回

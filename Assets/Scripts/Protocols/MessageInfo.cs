@@ -1053,6 +1053,15 @@ namespace netty
       get { return _isOver; }
       set { _isOver = value; }
     }
+
+    private int _leaveCardNum = default(int);
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"leaveCardNum", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int leaveCardNum
+    {
+      get { return _leaveCardNum; }
+      set { _leaveCardNum = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -1346,6 +1355,13 @@ namespace netty
     {
       get { return _playerId; }
       set { _playerId = value; }
+    }
+    private netty.BankerType _bankerType;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = true, Name=@"bankerType", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public netty.BankerType bankerType
+    {
+      get { return _bankerType; }
+      set { _bankerType = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -2228,6 +2244,23 @@ namespace netty
             
       [global::ProtoBuf.ProtoEnum(Name=@"STATUS_PREPARE_NEXT", Value=7)]
       STATUS_PREPARE_NEXT = 7
+    }
+  
+    [global::ProtoBuf.ProtoContract(Name=@"BankerType")]
+    public enum BankerType
+    {
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"BT_NONE", Value=0)]
+      BT_NONE = 0,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"BT_BAWANG", Value=1)]
+      BT_BAWANG = 1,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"BT_LUNZHUANG", Value=2)]
+      BT_LUNZHUANG = 2,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"BT_ZHUANZHUANG", Value=3)]
+      BT_ZHUANZHUANG = 3
     }
   
 }

@@ -738,6 +738,8 @@ public class HomeController : MonoBehaviour
                     if (m_IsGameOver)
                     {
                         nnSettlementFinal.SetSettlementUI(nnRoom, msg.settlementInfo);
+                        ddzRoom.SelfPlayer.LeaveCardCount = msg.settlementInfo.leaveCardNum;
+                        _selfInfo.RefreshSelfInfos(ddzRoom.SelfPlayer);
                     }
                 }
                 break;
