@@ -79,6 +79,7 @@ public class NNSettlementFinal : MonoBehaviour
             if (data.ID == room.playerSelf.PlayerInfo.PlayerId)
             {
                 selfWin = data.isWin;
+                room.playerSelf.PlayerInfo.LeaveCardCount = data.leaveCardNum;
             }
         }
         int index = 0;

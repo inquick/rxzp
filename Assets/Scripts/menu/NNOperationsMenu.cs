@@ -29,6 +29,8 @@ public class NNOperationsMenu : MonoBehaviour
 
     public ThirdParty thirdParty;
 
+    private string[] bankerTypeNames = { "", "霸王庄", "轮庄", "转庄" };
+
 	// Use this for initialization
     void Start()
     {
@@ -91,7 +93,7 @@ public class NNOperationsMenu : MonoBehaviour
     // 邀请微信好友
     private void Invite()
     {
-        thirdParty.ThirdPartyShare("瑞星牛牛，房号：" + room.GetRoomId + "(" + room.GameCounts + "局AA开房)", "轮庄 扣" + (room.GameCounts / 10) + "张 最多5人", 1);
+        thirdParty.ThirdPartyShare("瑞星牛牛，房号：" + room.GetRoomId + "(" + room.GameCounts + "局AA开房)", bankerTypeNames[(int)room.CurrentBankerType] + " 扣" + (room.GameCounts / 10) + "张 最多5人", 1);
     }
 
     // 开始游戏

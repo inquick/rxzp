@@ -738,7 +738,7 @@ public class HomeController : MonoBehaviour
                     if (m_IsGameOver)
                     {
                         nnSettlementFinal.SetSettlementUI(nnRoom, msg.settlementInfo);
-                        ddzRoom.SelfPlayer.LeaveCardCount = msg.settlementInfo.leaveCardNum;
+                        ddzRoom.SelfPlayer.LeaveCardCount = nnRoom.playerSelf.PlayerInfo.LeaveCardCount;
                         _selfInfo.RefreshSelfInfos(ddzRoom.SelfPlayer);
                     }
                 }
@@ -771,10 +771,17 @@ public class HomeController : MonoBehaviour
         windows[WINDOW_ID.WINDOW_ID_TIP].SetActive(true);
     }
 
+    private UnityEngine.Events.UnityAction lastDialogOKBtnCallBack = null;
+
     public void ShowDialog(string content, UnityEngine.Events.UnityAction callback)
     {
         DialogContentText.text = content;
-        DialogOKBtn.onClick.AddListener(callback);
+        if (lastDialogOKBtnCallBack != callback)
+        {
+            lastDialogOKBtnCallBack = callback;
+            DialogOKBtn.onClick.RemoveListener(lastDialogOKBtnCallBack);
+            DialogOKBtn.onClick.AddListener(callback);
+        }
         windows[WINDOW_ID.WINDOW_ID_DIALONG_FINAL].SetActive(true);
     }
 

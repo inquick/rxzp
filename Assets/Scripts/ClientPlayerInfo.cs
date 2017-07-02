@@ -341,8 +341,6 @@ public class ClientPlayerInfo
         headIconUrl = info.imgUrl;
         leaveCardCount = info.cardNum;
 
-        leaveCardCount = 0;
-
         PlayerPrefs.SetInt("PLAYERID", playerId);
         PlayerPrefs.SetString("TOKEN", info.token);
 

@@ -38,6 +38,8 @@ public class NNRoomSprite : MonoBehaviour
 
     private int games = 0;
 
+    private BankerType bankerType = BankerType.BT_NONE;
+
     /// <summary>
     /// 创建房间游戏局数
     /// </summary>
@@ -50,6 +52,12 @@ public class NNRoomSprite : MonoBehaviour
     public int GetRoomId
     {
         get { return m_roomId; }
+    }
+
+    public BankerType CurrentBankerType
+    {
+        set { bankerType = value; }
+        get { return bankerType; }
     }
 
     //private int _playedGameNum = 0;

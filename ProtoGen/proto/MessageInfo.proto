@@ -316,6 +316,8 @@ message SettlementData
 	required int32 finalscore = 3;
 	// 输赢状态
 	required bool isWin = 4;
+	// 玩家剩余房卡数（大局结束时发，每个玩家都不一样）
+	optional int32 leaveCardNum	= 5;
 	
 }
 
@@ -324,8 +326,6 @@ message SettlementInfo{
 	repeated SettlementData players = 1;
 	// 大局是否结束
 	required bool isOver = 2;
-	// 玩家剩余房卡数（大局结束时发，每个玩家都不一样）
-	optional int32 leaveCardNum	= 3;
 }
 
 //14、出牌请求
@@ -448,7 +448,7 @@ message PostNNDealResp{
 	required int32 playedGames = 3;
 	// 房间总局数
 	required int32 totalGames = 4;
-	// 庄家id
+	// 本局庄家id
 	required int32 bankerId = 5;
 }
 

@@ -17,7 +17,7 @@ public class CreateNNMenu : MonoBehaviour
 
     private int games = 10;
     private int payType = 2;
-    private BankerType zhuangType = BankerType.BT_NONE;
+    private BankerType zhuangType = BankerType.BT_BAWANG;
 
     public Toggle checkNum10 = null;
     public Toggle checkNum20 = null;

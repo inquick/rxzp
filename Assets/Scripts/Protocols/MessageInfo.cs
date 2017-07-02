@@ -1029,6 +1029,15 @@ namespace netty
       get { return _isWin; }
       set { _isWin = value; }
     }
+
+    private int _leaveCardNum = default(int);
+    [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"leaveCardNum", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int leaveCardNum
+    {
+      get { return _leaveCardNum; }
+      set { _leaveCardNum = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -1052,15 +1061,6 @@ namespace netty
     {
       get { return _isOver; }
       set { _isOver = value; }
-    }
-
-    private int _leaveCardNum = default(int);
-    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"leaveCardNum", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(default(int))]
-    public int leaveCardNum
-    {
-      get { return _leaveCardNum; }
-      set { _leaveCardNum = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
