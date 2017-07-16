@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 using netty;
 using UnityEngine.UI;
+using System;
 
 public class ThirdParty : MonoBehaviour
 {
@@ -74,6 +75,8 @@ public class ThirdParty : MonoBehaviour
             LoginReq login = new LoginReq();
             req.messageId = MESSAGE_ID.msg_LoginReq;
             login.code = "";
+            login.clientinfos = "Win32_version_" + Application.version;
+            Debug.Log(login.clientinfos);
             if (token.Length > 0)
             {
                 login.code = token;
@@ -95,7 +98,7 @@ public class ThirdParty : MonoBehaviour
         }
         else
         {
-            controller.ShowTips("网络连接失败，请检查网络是否打开！");
+            controller.ShowTips(Strings.SS_CONNECT_FAILS);
             Debug.LogError("链接服务器失败！");
         }
     }
@@ -151,7 +154,12 @@ public class ThirdParty : MonoBehaviour
                 req.messageId = MESSAGE_ID.msg_LoginReq;
                 login.code = result[1];
                 req.loginReq = login;
-
+#if UNITY_IPHONE 
+                login.clientinfos = "iPhone_version_" + Application.version;
+#elif UNITY_ANDROID
+                login.clientinfos = "Android_version_" + Application.version;
+#endif
+                Debug.Log(login.clientinfos);
                 PPSocket.GetInstance().SendMessage(req);
 
                 // 打开主界面
@@ -163,13 +171,13 @@ public class ThirdParty : MonoBehaviour
             }
             else
             {
-                controller.ShowTips("网络连接失败，请检查网络是否打开！");
+                controller.ShowTips(Strings.SS_CONNECT_FAILS);
             }
         }
         else
         {
             // 登录失败
-            controller.ShowTips("微信授权失败，错误码" + result[0]);
+            controller.ShowTips(Strings.SS_WXEMPOWER_FAILS + result[0]);
         }
     }
 
@@ -180,7 +188,7 @@ public class ThirdParty : MonoBehaviour
         if (code == 0)
         {
             // 分享回调
-            controller.ShowTips("分享成功");
+            controller.ShowTips(Strings.SS_SHARE_SUCCESS);
         }
     }
 

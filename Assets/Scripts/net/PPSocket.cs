@@ -102,8 +102,7 @@ public class PPSocket
             {
                 //与服务器断开连接跳出循环     
                 Debug.Log("Failed to clientSocket server.");
-                clientSocket.Close();
-                clientSocket = null;
+                Closed();
                 break;
             }
             try
@@ -192,8 +191,7 @@ public class PPSocket
 
         if (!clientSocket.Connected)
         {
-            clientSocket.Close();
-            clientSocket = null;
+            Closed();
             return;
         }
         try
@@ -228,7 +226,7 @@ public class PPSocket
             if (!success)
             {
                 clientSocket.Close();
-                Debug.Log("Time Out !");
+                Debug.LogError("Time Out !");
             }else
             {
                 Debug.Log("发送请求 msgId = " + msg.messageId + "成功!");
@@ -237,7 +235,7 @@ public class PPSocket
         }
         catch (Exception e)
         {
-            Debug.Log("send message error: " + e);
+            Debug.LogError("send message error: " + e);
         }
     }
 
@@ -250,9 +248,13 @@ public class PPSocket
     public void Closed()
     {
 		Debug.Log ("关闭Socket！！");
-        if (clientSocket != null && clientSocket.Connected)
+        
+        if (clientSocket != null)
         {
-            clientSocket.Shutdown(SocketShutdown.Both);
+            if (clientSocket.Connected)
+            {
+                clientSocket.Shutdown(SocketShutdown.Both);
+            }
             clientSocket.Close();
         }
         clientSocket = null;

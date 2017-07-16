@@ -28,7 +28,6 @@ public class Dissolution : MonoBehaviour
     private Dictionary<int, AgreeOrRefuse> aors = new Dictionary<int, AgreeOrRefuse>();
 
     private DateTime begineTime;
-    private int nowSecond;
 
     private int agreeCnt = 1;
     private int refuseCnt = 0;
@@ -153,6 +152,43 @@ public class Dissolution : MonoBehaviour
         if (msg.agreeCnt + msg.disagreeCnt == totalPlayerNum)
         {
             time = (int)(System.DateTime.Now - begineTime).TotalSeconds + 1;
+        }
+    }
+
+    public void OnReConnect(RoomInfo rinfo)
+    {
+        agreeCnt = 0;
+        refuseCnt = 0;
+        buttonContainer.SetActive(true);
+        foreach (int agreeId in rinfo.agreePlayerIds)
+        {
+            aors[agreeCnt].SetState(1);
+            ++agreeCnt;
+
+            if(agreeId == room.playerSelf.PlayerInfo.PlayerId)
+            {
+                buttonContainer.SetActive(false);
+            }
+        }
+        foreach (int refuseId in rinfo.refusePlayerIds)
+        {
+            aors[agreeCnt + refuseCnt].SetState(0);
+            ++refuseCnt;
+
+            if (refuseId == room.playerSelf.PlayerInfo.PlayerId)
+            {
+                buttonContainer.SetActive(false);
+            }
+        }
+        System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1)); // 当地时区
+        begineTime = startTime.AddSeconds(rinfo.startDisbandTime);
+        //TimeSpan.FromSeconds(rinfo.startDisbandTime).Ticks;
+        time = (int)(System.DateTime.Now - begineTime).TotalSeconds + 1;
+        if(time > 60)
+        {
+            // 大于60秒不显示
+            buttonContainer.SetActive(true);
+            this.gameObject.SetActive(false);
         }
     }
 }

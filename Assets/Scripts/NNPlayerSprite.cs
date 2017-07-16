@@ -120,13 +120,14 @@ public class NNPlayerSprite : MonoBehaviour
     public void OnPostShowCards(PostNNShowCards msg)
     {
         int index = 1;
-        Debug.Log(pokers.ToString());
+        string debugLog = "OnPostShowCards : ";
         foreach (int cardId in msg.pokers)
         {
-            Debug.Log("index = " + index);
+            debugLog += cardId + ",";
             pokers[index].CardId = cardId;
             ++index;
         }
+        Debug.Log(debugLog);
 
         nnType.sprite = ResourceManager.Instance.GetNiuNiuTypeSprite(msg.nntype);
         nnType.SetNativeSize();
@@ -179,11 +180,6 @@ public class NNPlayerSprite : MonoBehaviour
         image.sprite = sprite;
         playerIcon.gameObject.SetActive(true);
         playerInfo.HeadIcon = sprite;
-    }
-
-    public void OnPostUnusualQuit()
-    {
-        offline.SetActive(true);
     }
 
     public void OnPostPlayerOnline()

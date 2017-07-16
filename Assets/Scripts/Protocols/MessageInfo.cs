@@ -482,22 +482,31 @@ namespace netty
       set { _postPlayerOffline = value; }
     }
 
-    private netty.ReLoginReq _reLoginReq = null;
-    [global::ProtoBuf.ProtoMember(53, IsRequired = false, Name=@"reLoginReq", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    private netty.ReConnectReq _reConnectReq = null;
+    [global::ProtoBuf.ProtoMember(53, IsRequired = false, Name=@"reConnectReq", DataFormat = global::ProtoBuf.DataFormat.Default)]
     [global::System.ComponentModel.DefaultValue(null)]
-    public netty.ReLoginReq reLoginReq
+    public netty.ReConnectReq reConnectReq
     {
-      get { return _reLoginReq; }
-      set { _reLoginReq = value; }
+      get { return _reConnectReq; }
+      set { _reConnectReq = value; }
     }
 
-    private netty.ReLoginResp _reLoginResp = null;
-    [global::ProtoBuf.ProtoMember(54, IsRequired = false, Name=@"reLoginResp", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    private netty.ReConnectResp _reConnectResp = null;
+    [global::ProtoBuf.ProtoMember(54, IsRequired = false, Name=@"reConnectResp", DataFormat = global::ProtoBuf.DataFormat.Default)]
     [global::System.ComponentModel.DefaultValue(null)]
-    public netty.ReLoginResp reLoginResp
+    public netty.ReConnectResp reConnectResp
     {
-      get { return _reLoginResp; }
-      set { _reLoginResp = value; }
+      get { return _reConnectResp; }
+      set { _reConnectResp = value; }
+    }
+
+    private netty.HeartBeatReq _heartBeatReq = null;
+    [global::ProtoBuf.ProtoMember(55, IsRequired = false, Name=@"heartBeatReq", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public netty.HeartBeatReq heartBeatReq
+    {
+      get { return _heartBeatReq; }
+      set { _heartBeatReq = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -524,6 +533,15 @@ namespace netty
     {
       get { return _playerid; }
       set { _playerid = value; }
+    }
+
+    private string _clientinfos = "";
+    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"clientinfos", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string clientinfos
+    {
+      get { return _clientinfos; }
+      set { _clientinfos = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -806,6 +824,36 @@ namespace netty
     {
       get { return _bankerId; }
       set { _bankerId = value; }
+    }
+    private bool _isDisband;
+    [global::ProtoBuf.ProtoMember(8, IsRequired = true, Name=@"isDisband", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public bool isDisband
+    {
+      get { return _isDisband; }
+      set { _isDisband = value; }
+    }
+    private readonly global::System.Collections.Generic.List<int> _agreePlayerIds = new global::System.Collections.Generic.List<int>();
+    [global::ProtoBuf.ProtoMember(9, Name=@"agreePlayerIds", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public global::System.Collections.Generic.List<int> agreePlayerIds
+    {
+      get { return _agreePlayerIds; }
+    }
+  
+    private readonly global::System.Collections.Generic.List<int> _refusePlayerIds = new global::System.Collections.Generic.List<int>();
+    [global::ProtoBuf.ProtoMember(10, Name=@"refusePlayerIds", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public global::System.Collections.Generic.List<int> refusePlayerIds
+    {
+      get { return _refusePlayerIds; }
+    }
+  
+
+    private int _startDisbandTime = default(int);
+    [global::ProtoBuf.ProtoMember(11, IsRequired = false, Name=@"startDisbandTime", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int startDisbandTime
+    {
+      get { return _startDisbandTime; }
+      set { _startDisbandTime = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -1959,10 +2007,10 @@ namespace netty
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ReLoginReq")]
-  public partial class ReLoginReq : global::ProtoBuf.IExtensible
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ReConnectReq")]
+  public partial class ReConnectReq : global::ProtoBuf.IExtensible
   {
-    public ReLoginReq() {}
+    public ReConnectReq() {}
     
     private int _playerId;
     [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"playerId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
@@ -1983,10 +2031,10 @@ namespace netty
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ReLoginResp")]
-  public partial class ReLoginResp : global::ProtoBuf.IExtensible
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ReConnectResp")]
+  public partial class ReConnectResp : global::ProtoBuf.IExtensible
   {
-    public ReLoginResp() {}
+    public ReConnectResp() {}
     
     private bool _reLoginSuccessed;
     [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"reLoginSuccessed", DataFormat = global::ProtoBuf.DataFormat.Default)]
@@ -1994,6 +2042,23 @@ namespace netty
     {
       get { return _reLoginSuccessed; }
       set { _reLoginSuccessed = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"HeartBeatReq")]
+  public partial class HeartBeatReq : global::ProtoBuf.IExtensible
+  {
+    public HeartBeatReq() {}
+    
+    private int _playerId;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"playerId", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int playerId
+    {
+      get { return _playerId; }
+      set { _playerId = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -2163,11 +2228,11 @@ namespace netty
       [global::ProtoBuf.ProtoEnum(Name=@"msg_HeartBeatResp", Value=53)]
       msg_HeartBeatResp = 53,
             
-      [global::ProtoBuf.ProtoEnum(Name=@"msg_ReLoginReq", Value=54)]
-      msg_ReLoginReq = 54,
+      [global::ProtoBuf.ProtoEnum(Name=@"msg_ReConnectReq", Value=54)]
+      msg_ReConnectReq = 54,
             
-      [global::ProtoBuf.ProtoEnum(Name=@"msg_ReLoginResp", Value=55)]
-      msg_ReLoginResp = 55
+      [global::ProtoBuf.ProtoEnum(Name=@"msg_ReConnectResp", Value=55)]
+      msg_ReConnectResp = 55
     }
   
     [global::ProtoBuf.ProtoContract(Name=@"NNType")]

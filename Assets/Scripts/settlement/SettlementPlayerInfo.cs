@@ -8,7 +8,7 @@ public class SettlementPlayerInfo : MonoBehaviour
     public WinScore winScore;
     public GameObject winIcon;
 
-    public Text name;
+    public Text playerName;
     public Text id;
     public Text idTitle;
 
@@ -36,7 +36,7 @@ public class SettlementPlayerInfo : MonoBehaviour
             path = "settlement/win/";
             winIcon.SetActive(true);
 
-            name.text = player.Name;
+            playerName.text = player.Name;
             id.text = player.PlayerId.ToString();
             idTitle.text = "ID :";
         }
@@ -45,7 +45,7 @@ public class SettlementPlayerInfo : MonoBehaviour
             path = "settlement/lose/";
             winIcon.SetActive(false);
 
-            name.text = string.Format("<color=#ffffffff>{0}</color>", player.Name);
+            playerName.text = string.Format("<color=#ffffffff>{0}</color>", player.Name);
             id.text = string.Format("<color=#ffffffff>{0}</color>", player.PlayerId.ToString());
             idTitle.text = "<color=#ffffffff>ID :</color>";
         }

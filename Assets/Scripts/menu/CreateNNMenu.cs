@@ -16,7 +16,7 @@ public class CreateNNMenu : MonoBehaviour
     public NNRoomSprite room;
 
     private int games = 10;
-    private int payType = 2;
+    private PayTypes payType = PayTypes.PT_PAY_AA;
     private BankerType zhuangType = BankerType.BT_BAWANG;
 
     public Toggle checkNum10 = null;
@@ -102,7 +102,7 @@ public class CreateNNMenu : MonoBehaviour
         CreateNNRoomReq createRoom = new CreateNNRoomReq();
         req.messageId = MESSAGE_ID.msg_CreateNNRoomReq;
         createRoom.games = this.games;
-        createRoom.type = this.payType;
+        createRoom.type = (int)this.payType;
         createRoom.bankerType = this.zhuangType;
         createRoom.playerId = controller.PlayerId;
         req.createNNRoomReq = createRoom;
@@ -114,6 +114,8 @@ public class CreateNNMenu : MonoBehaviour
         controller.LoadingStart();
         // 设置游戏局数
         room.GameCounts = this.games;
+        room.PayType = this.payType;
+        room.PayCount = NeedKeyNum();
 
         Debug.Log("CreateNNRoomReq sended!");
 
@@ -171,7 +173,7 @@ public class CreateNNMenu : MonoBehaviour
     {
         if (isSelected)
         {
-            payType = 1;
+            payType = PayTypes.PT_PAY_ROOM_OWNER;
             textpayLead.color = selected;
             RefreshKeyNum();
             Debug.Log("房主支付");
@@ -185,7 +187,7 @@ public class CreateNNMenu : MonoBehaviour
     {
         if (isSelected)
         {
-            payType = 2;
+            payType = PayTypes.PT_PAY_AA;
             textpayAA.color = selected;
             RefreshKeyNum();
             Debug.Log("AA支付");
@@ -200,7 +202,7 @@ public class CreateNNMenu : MonoBehaviour
     {
         if (isSelected)
         {
-            payType = 3;
+            payType = PayTypes.PT_PAY_WIN;
             textpayWin.color = selected;
             RefreshKeyNum();
             Debug.Log("AA支付");
@@ -265,11 +267,11 @@ public class CreateNNMenu : MonoBehaviour
 
         switch (payType)
         {
-            case 1: // 房主支付
-            case 3: // 赢家支付
+            case PayTypes.PT_PAY_ROOM_OWNER: // 房主支付
+            case PayTypes.PT_PAY_WIN: // 赢家支付
                 needKeyNum = 2 * games / 5;  // (5 * games / 10)
                 break;
-            case 2: // AA支付
+            case PayTypes.PT_PAY_AA: // AA支付
                 needKeyNum = games / 10;  // (1 * games / 10)
                 break;
             default:

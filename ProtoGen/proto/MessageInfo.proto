@@ -66,8 +66,8 @@ enum MESSAGE_ID{
 	msg_HeartBeatReq = 52;
 	msg_HeartBeatResp = 53;
 	// 断线重连验证
-	msg_ReLoginReq = 54;
-	msg_ReLoginResp = 55;
+	msg_ReConnectReq = 54;
+	msg_ReConnectResp = 55;
 }
 
 enum NNType
@@ -178,8 +178,11 @@ message MessageInfo{
 	optional PostPlayerOffline postPlayerOffline = 52;
 	
 	// 断线重连
-	optional ReLoginReq reLoginReq = 53;
-	optional ReLoginResp reLoginResp = 54;
+	optional ReConnectReq reConnectReq = 53;
+	optional ReConnectResp reConnectResp = 54;
+	
+	//  心跳
+	optional HeartBeatReq heartBeatReq = 55;
 }
 
 //1、登录信息
@@ -188,6 +191,8 @@ message LoginReq{
 	required string code = 1;
 	// 玩家id（微信openid绑定过游戏ID，则使用游戏ID登录）
 	optional int32 playerid = 2;
+	// 客户端版本信息
+	optional string clientinfos = 3;
 }
 
 //用户基本信息
@@ -255,6 +260,10 @@ message RoomInfo{
 	optional int32 totalGames = 5;
 	optional int32 currentPlayerId = 6;
 	optional int32 bankerId = 7; // 庄家id
+	required bool isDisband = 8; // 是否在解散房间
+	repeated int32 agreePlayerIds = 9; // 同意解散房间玩家id
+	repeated int32 refusePlayerIds = 10; // 拒绝解散房间玩家id
+	optional int32 startDisbandTime = 11; // 解散房间起始时间点
 }
 
 //8、玩家当前信息
@@ -596,7 +605,7 @@ message PostPlayerOffline
 }
 
 // 55、重连请求
-message ReLoginReq
+message ReConnectReq
 {
 	// 玩家角色id
 	required int32 playerId = 1;
@@ -605,8 +614,15 @@ message ReLoginReq
 }
 
 // 56、重连请求响应
-message ReLoginResp
+message ReConnectResp
 {
 	// 重新登录成功 true， 否则为 false
 	required bool reLoginSuccessed = 1;
+}
+
+// 57、心跳
+message HeartBeatReq
+{
+	// 玩家角色id
+	required int32 playerId = 1;
 }

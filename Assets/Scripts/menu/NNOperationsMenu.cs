@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using netty;
+using System;
 
 public class NNOperationsMenu : MonoBehaviour
 {
@@ -28,8 +29,6 @@ public class NNOperationsMenu : MonoBehaviour
     public NNRoomSprite room;
 
     public ThirdParty thirdParty;
-
-    private string[] bankerTypeNames = { "", "霸王庄", "轮庄", "转庄" };
 
 	// Use this for initialization
     void Start()
@@ -93,7 +92,7 @@ public class NNOperationsMenu : MonoBehaviour
     // 邀请微信好友
     private void Invite()
     {
-        thirdParty.ThirdPartyShare("瑞星牛牛，房号：" + room.GetRoomId + "(" + room.GameCounts + "局AA开房)", bankerTypeNames[(int)room.CurrentBankerType] + " 扣" + (room.GameCounts / 10) + "张 最多5人", 1);
+        thirdParty.ThirdPartyShare(String.Format(Strings.SS_SHARE_ROOMINFO1, room.GetRoomId, room.GameCounts, Strings.SS_PAY_TYPS[(int)room.PayType]), String.Format(Strings.SS_SHARE_ROOMINFO2, Strings.SS_BANKER_TYPES[(int)room.CurrentBankerType], room.PayCount), 1);
     }
 
     // 开始游戏
@@ -106,6 +105,8 @@ public class NNOperationsMenu : MonoBehaviour
         req.startNNGame = startGame;
 
         PPSocket.GetInstance().SendMessage(req);
+
+        ShowMenuGroup(NNOperationGroup.NNOG_None);
     }
 
     // 开牌
@@ -146,6 +147,8 @@ public class NNOperationsMenu : MonoBehaviour
         req.nnPrepareReq = prepare;
 
         PPSocket.GetInstance().SendMessage(req);
+
+        ShowMenuGroup(NNOperationGroup.NNOG_None);
     }
 
     public void ShowMenuGroup(NNOperationGroup group)
@@ -163,6 +166,7 @@ public class NNOperationsMenu : MonoBehaviour
                 yafen.SetActive(false);
                 kaipai.SetActive(false);
                 ready.SetActive(false);
+                startBtn.gameObject.SetActive(false);
                 break;
             case NNOperationGroup.NNOG_Yafen:
                 playgame.SetActive(false);

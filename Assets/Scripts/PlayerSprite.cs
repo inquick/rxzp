@@ -21,7 +21,7 @@ public class PlayerSprite : MonoBehaviour {
 
     public Image identity;
 
-    public Text name;
+    public Text playerName;
 
     public Text score;
 
@@ -67,7 +67,7 @@ public class PlayerSprite : MonoBehaviour {
 
     public void InitUserUI()
     {
-        name.text = playerInfo.Name;
+        playerName.text = playerInfo.Name;
         if (playerInfo.HeadIconUrl == "")
         {
             playerInfo.HeadIconUrl = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492235773979&di=42b5ddb3d50d6ea32fafee903833c44c&imgtype=0&src=http%3A%2F%2Fwenwen.soso.com%2Fp%2F20110825%2F20110825115928-858187777.jpg";
@@ -83,7 +83,7 @@ public class PlayerSprite : MonoBehaviour {
         }
 
         score.text = playerInfo.Score.ToString();
-        leaveCount.text = String.Format("剩<color=#F7EC19FF>{0}</color>张", playerInfo.LeaveCardCount);
+        leaveCount.text = String.Format(Strings.SS_LEAVE_CARDS, playerInfo.LeaveCardCount);
     }
 
     /// <summary>

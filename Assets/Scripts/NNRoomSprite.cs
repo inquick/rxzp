@@ -40,6 +40,10 @@ public class NNRoomSprite : MonoBehaviour
 
     private BankerType bankerType = BankerType.BT_NONE;
 
+    private PayTypes m_payType = PayTypes.PT_PAY_AA;
+
+    private int m_cardCost = 0;
+
     /// <summary>
     /// 创建房间游戏局数
     /// </summary>
@@ -47,6 +51,12 @@ public class NNRoomSprite : MonoBehaviour
     {
         set { games = value; }
         get { return games; }
+    }
+
+    public PayTypes PayType
+    {
+        set { m_payType = value; }
+        get { return m_payType; }
     }
 
     public int GetRoomId
@@ -58,6 +68,12 @@ public class NNRoomSprite : MonoBehaviour
     {
         set { bankerType = value; }
         get { return bankerType; }
+    }
+
+    public int PayCount
+    {
+        set { m_cardCost = value; }
+        get { return m_cardCost; }
     }
 
     //private int _playedGameNum = 0;
@@ -88,7 +104,7 @@ public class NNRoomSprite : MonoBehaviour
 
     public void Disband()
     {
-        controller.ShowDialog("是否确定解散房间？", AgreeDisband);
+        controller.ShowDialog(Strings.SS_ASK_DISBAND, AgreeDisband);
     }
 
     public void AgreeDisband()
@@ -129,7 +145,7 @@ public class NNRoomSprite : MonoBehaviour
         m_roomId = _roomId;
         roomId.text = m_roomId.ToString();
         playerSelf.PlayerInfo = self;
-        currentCount.text = "1";
+        currentCount.text = "0";
 
         operations.ShowMenuGroup(NNOperationGroup.NNOG_Play);
 
@@ -219,6 +235,12 @@ public class NNRoomSprite : MonoBehaviour
             {
                 OnReEnterRoom(p, msg.roomInfo.bankerId);
             }
+        }
+
+        if (msg.roomInfo.isDisband)
+        {
+            dissolution.Show(true);
+            dissolution.OnReConnect(msg.roomInfo);
         }
     }
 
@@ -367,7 +389,6 @@ public class NNRoomSprite : MonoBehaviour
         if (playerSelf.PlayerInfo != null && msg.playerId == playerSelf.PlayerInfo.PlayerId)
         {
             playerSelf.ShowOk(true);
-            operations.ShowMenuGroup(NNOperationGroup.NNOG_None);
         }
     }
 
@@ -409,6 +430,9 @@ public class NNRoomSprite : MonoBehaviour
             default:
                 break;
         }
+
+        // 这里处理比较特殊
+        operations.startBtn.gameObject.SetActive(true);
     }
     // 继续下一局
     public void Again()
@@ -515,53 +539,29 @@ public class NNRoomSprite : MonoBehaviour
     {
         if (player2.PlayerInfo != null && msg.playerId == player2.PlayerInfo.PlayerId)
         {
-            soundPlayer.OnPostSendSoundResp(2, msg.soundId);
+            soundPlayer.OnPostSendSoundResp(2, msg.soundId, Sex.Boy);
         }
         if (player3.PlayerInfo != null && msg.playerId == player3.PlayerInfo.PlayerId)
         {
-            soundPlayer.OnPostSendSoundResp(3, msg.soundId);
+            soundPlayer.OnPostSendSoundResp(3, msg.soundId, Sex.Boy);
         }
         if (player4.PlayerInfo != null && msg.playerId == player4.PlayerInfo.PlayerId)
         {
-            soundPlayer.OnPostSendSoundResp(4, msg.soundId);
+            soundPlayer.OnPostSendSoundResp(4, msg.soundId, Sex.Boy);
         }
         if (player5.PlayerInfo != null && msg.playerId == player5.PlayerInfo.PlayerId)
         {
-            soundPlayer.OnPostSendSoundResp(5, msg.soundId);
+            soundPlayer.OnPostSendSoundResp(5, msg.soundId, Sex.Boy);
         }
         if (playerSelf.PlayerInfo != null && msg.playerId == playerSelf.PlayerInfo.PlayerId)
         {
-            soundPlayer.OnPostSendSoundResp(1, msg.soundId);
+            soundPlayer.OnPostSendSoundResp(1, msg.soundId, Sex.Boy);
         }
     }
 
     public void HideChatChooseWnd()
     {
         chatChooseWnd.SetActive(false);
-    }
-
-    public void OnPostUnusualQuit(PostUnusualQuit msg)
-    {
-        if (player2.PlayerInfo != null && msg.playerId == player2.PlayerInfo.PlayerId)
-        {
-            player2.OnPostUnusualQuit();
-        }
-        if (player3.PlayerInfo != null && msg.playerId == player3.PlayerInfo.PlayerId)
-        {
-            player3.OnPostUnusualQuit();
-        }
-        if (player4.PlayerInfo != null && msg.playerId == player4.PlayerInfo.PlayerId)
-        {
-            player4.OnPostUnusualQuit();
-        }
-        if (player5.PlayerInfo != null && msg.playerId == player5.PlayerInfo.PlayerId)
-        {
-            player5.OnPostUnusualQuit();
-        }
-        if (playerSelf.PlayerInfo != null && msg.playerId == playerSelf.PlayerInfo.PlayerId)
-        {
-            playerSelf.OnPostUnusualQuit();
-        }
     }
 
     public void OnPostPlayerOnline(PostPlayerOnline msg)
@@ -588,25 +588,25 @@ public class NNRoomSprite : MonoBehaviour
         }
     }
 
-    public void OnPostPlayerOffline(PostPlayerOffline msg)
+    public void OnPostPlayerOffline(int playerId)
     {
-        if (player2.PlayerInfo != null && msg.playerId == player2.PlayerInfo.PlayerId)
+        if (player2.PlayerInfo != null && playerId == player2.PlayerInfo.PlayerId)
         {
             player2.OnPostPlayerOffline();
         }
-        if (player3.PlayerInfo != null && msg.playerId == player3.PlayerInfo.PlayerId)
+        if (player3.PlayerInfo != null && playerId == player3.PlayerInfo.PlayerId)
         {
             player3.OnPostPlayerOffline();
         }
-        if (player4.PlayerInfo != null && msg.playerId == player4.PlayerInfo.PlayerId)
+        if (player4.PlayerInfo != null && playerId == player4.PlayerInfo.PlayerId)
         {
             player4.OnPostPlayerOffline();
         }
-        if (player5.PlayerInfo != null && msg.playerId == player5.PlayerInfo.PlayerId)
+        if (player5.PlayerInfo != null && playerId == player5.PlayerInfo.PlayerId)
         {
             player5.OnPostPlayerOffline();
         }
-        if (playerSelf.PlayerInfo != null && msg.playerId == playerSelf.PlayerInfo.PlayerId)
+        if (playerSelf.PlayerInfo != null && playerId == playerSelf.PlayerInfo.PlayerId)
         {
             playerSelf.OnPostPlayerOffline();
         }

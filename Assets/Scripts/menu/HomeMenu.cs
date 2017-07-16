@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using netty;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using System;
 
 /// <summary>
 /// 主场景菜单面板
@@ -55,7 +56,7 @@ public class HomeMenu : MonoBehaviour, IPointerClickHandler
     /// </summary>
 	void CreateDDZ()
     {
-        controller.ShowTips("功能尚在研发，暂未开放！");
+        controller.ShowTips(Strings.SS_NOT_OPEN);
         //controller.OpenWindow(WINDOW_ID.WINDOW_ID_CREATE_DDZ);
 	}
 
@@ -64,7 +65,7 @@ public class HomeMenu : MonoBehaviour, IPointerClickHandler
 	/// </summary>
 	void EnterDDZ()
     {
-        controller.ShowTips("功能尚在研发，暂未开放！");
+        controller.ShowTips(Strings.SS_NOT_OPEN);
         //controller.OpenWindow(WINDOW_ID.WINDOW_ID_ENTER_DDZ);
         //GameObject.Find("UIRoot/WndEnter").GetComponent<EnterMenu>().SetGameType = GameType.GT_DDZ;
     }
@@ -91,7 +92,7 @@ public class HomeMenu : MonoBehaviour, IPointerClickHandler
     /// </summary>
     void Shop()
     {
-        controller.ShowTips("请关注公众号“瑞星纸牌”购买房卡。");
+        controller.ShowTips(Strings.SS_BUY_ROOM_CARDS);
         //controller.OpenWindow(WINDOW_ID.WINDOW_ID_SHOP);
     }
 
@@ -101,7 +102,7 @@ public class HomeMenu : MonoBehaviour, IPointerClickHandler
     /// </summary>
     void VipBtn()
     {
-        controller.ShowTips("功能尚在研发，暂未开放！");
+        controller.ShowTips(Strings.SS_NOT_OPEN);
     }
     
     /// <summary>
@@ -115,12 +116,12 @@ public class HomeMenu : MonoBehaviour, IPointerClickHandler
     void ShareToFriends()
     {
         shareTypePanel.SetActive(false);
-        thirdParty.ThirdPartyShare("游戏邀请", "玩家" + controller.PlayerName + " 口令：" + controller.PlayerId + " 邀请你加入【瑞星紙牌】！", 1);
+        thirdParty.ThirdPartyShare(Strings.SS_GAME_INVITE, String.Format(Strings.SS_INVITE_INFOS, controller.PlayerName, controller.PlayerId), 1);
     }
     void ShareToTimeline()
     {
         shareTypePanel.SetActive(false);
-        thirdParty.ThirdPartyShare("游戏邀请", "玩家" + controller.PlayerName + " 口令：" + controller.PlayerId + " 邀请你加入【瑞星紙牌】！", 0);
+        thirdParty.ThirdPartyShare(Strings.SS_GAME_INVITE, String.Format(Strings.SS_INVITE_INFOS, controller.PlayerName, controller.PlayerId), 0);
     }
     
     /// <summary>
@@ -128,7 +129,7 @@ public class HomeMenu : MonoBehaviour, IPointerClickHandler
     /// </summary>
     void ExtensionBtn()
     {
-        controller.ShowTips("功能尚在研发，暂未开放！");
+        controller.ShowTips(Strings.SS_NOT_OPEN);
     }
     
     /// <summary>
@@ -136,7 +137,7 @@ public class HomeMenu : MonoBehaviour, IPointerClickHandler
     /// </summary>
     void OtherBtn()
     {
-        controller.ShowTips("功能尚在研发，暂未开放！");
+        controller.ShowTips(Strings.SS_NOT_OPEN);
     }
      
     /// <summary>
@@ -157,7 +158,7 @@ public class HomeMenu : MonoBehaviour, IPointerClickHandler
 
     void Quit()
     {
-        controller.ShowDialog("是否要现在离开游戏？", controller.Quit);
+        controller.ShowDialog(Strings.SS_ASK_QUIT, controller.Quit);
     }
 
     public void HideShareBtn()

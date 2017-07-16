@@ -30,7 +30,8 @@ public class SoundPlayer : MonoBehaviour
     public AudioSource nnPlayer4;
     public AudioSource nnPlayer5;
 
-    private Dictionary<int, AudioClip> chatSounds = new Dictionary<int, AudioClip>();
+    private Dictionary<int, AudioClip> chatSoundsGirl = new Dictionary<int, AudioClip>();
+    private Dictionary<int, AudioClip> chatSoundsBoy = new Dictionary<int, AudioClip>();
     private Dictionary<NNType, AudioClip> nnSounds = new Dictionary<NNType, AudioClip>();
 
     void Awake()
@@ -43,11 +44,16 @@ public class SoundPlayer : MonoBehaviour
 
         for (int i = 1; i < 6; ++i )
         {
-            chatSounds.Add(i, Resources.Load<AudioClip>("sound/nn/chat/" + i.ToString()));
+            chatSoundsGirl.Add(i, Resources.Load<AudioClip>("sound/nn/chat/girl" + i.ToString()));
         }
 
-            //设置循环播放  
-            Music.loop = true;
+        for (int i = 1; i < 6; ++i)
+        {
+            chatSoundsBoy.Add(i, Resources.Load<AudioClip>("sound/nn/chat/boy" + i.ToString()));
+        }
+
+        //设置循环播放  
+        Music.loop = true;
 
         //设置音量为最大，区间在0-1之间  
         Music.volume = 1.0f;
@@ -138,28 +144,38 @@ public class SoundPlayer : MonoBehaviour
         PlayerPrefs.SetFloat("SoundVolume", slider.value);
     }
 
-    public void OnPostSendSoundResp(int playerOrder, int soundId)
+    public void OnPostSendSoundResp(int playerOrder, int soundId, Sex sex)
     {
+        AudioClip clip = null;
+        switch (sex)
+        {
+            case Sex.Girl:
+                clip = chatSoundsGirl[soundId];
+                break;
+            case Sex.Boy:
+                clip = chatSoundsBoy[soundId];
+                break;
+        }
         switch(playerOrder)
         {
             case 1:
-                nnPlayerSelf.clip = chatSounds[soundId];
+                nnPlayerSelf.clip = clip;
                 nnPlayerSelf.Play();
                 break;
             case 2:
-                nnPlayer2.clip = chatSounds[soundId];
+                nnPlayer2.clip = clip;
                 nnPlayer2.Play();
                 break;
             case 3:
-                nnPlayer3.clip = chatSounds[soundId];
+                nnPlayer3.clip = clip;
                 nnPlayer3.Play();
                 break;
             case 4:
-                nnPlayer4.clip = chatSounds[soundId];
+                nnPlayer4.clip = clip;
                 nnPlayer4.Play();
                 break;
             case 5:
-                nnPlayer5.clip = chatSounds[soundId];
+                nnPlayer5.clip = clip;
                 nnPlayer5.Play();
                 break;
             default:

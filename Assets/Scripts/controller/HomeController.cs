@@ -31,7 +31,7 @@ public class HomeController : MonoBehaviour
 
     private string shareUrl = null;
 
-    private bool TestHeartBeat = false;
+    private bool OpenHeartBeat = true;
 
     private bool m_IsGameOver = false;
 
@@ -236,14 +236,9 @@ public class HomeController : MonoBehaviour
             OnPostDealOver(msg);
             break;
         case MESSAGE_ID.msg_MsgInfo:
-            if (msg.msgInfo.type == 1004)
-            {
-                SendReLoginReq();
-            }else
-            {
-                ShowTips("ErrorCode : " + msg.msgInfo.type + " " + msg.msgInfo.message);
+                Debug.LogError(msg.msgInfo.message);
+                ShowTips(string.Format("ErrorCode : {0} {1}", msg.msgInfo.type, msg.msgInfo.message));
                 LoadingEnd();
-            }
             break;
         case MESSAGE_ID.msg_SettlementInfo:
             // 结算
@@ -319,25 +314,42 @@ public class HomeController : MonoBehaviour
             nnRoom.OnPostSendSoundResp(msg.postSendSoundResp);
             break;
         case MESSAGE_ID.msg_PostUnusualQuit:
-            nnRoom.OnPostUnusualQuit(msg.postUnusualQuit);
+            nnRoom.OnPostPlayerOffline(msg.postUnusualQuit.playerId);
             break;
         case MESSAGE_ID.msg_PostPlayerOnline:
             nnRoom.OnPostPlayerOnline(msg.postPlayerOnline);
             break;
         case MESSAGE_ID.msg_PostPlayerOffline:
-            nnRoom.OnPostPlayerOffline(msg.postPlayerOffline);
+            nnRoom.OnPostPlayerOffline(msg.postPlayerOffline.playerId);
             break;
         case MESSAGE_ID.msg_HeartBeatResp:
             lastHeartBeatResp = System.DateTime.Now;
             break;
-        case MESSAGE_ID.msg_ReLoginReq:
-            if (msg.reLoginResp.reLoginSuccessed)
+        case MESSAGE_ID.msg_ReConnectResp:
+            if (msg.reConnectResp.reLoginSuccessed)
             {
-                LoadingEnd();
+                if (windows[WINDOW_ID.WINDOW_ID_GAME_NN].activeSelf)
+                {
+                    CloseWindow(WINDOW_ID.WINDOW_ID_HOME);
+                    Debug.Log("玩家还在牛牛游戏中，准备进入牛牛游戏！！！");
+
+                    MessageInfo req = new MessageInfo();
+                    ReEntryNNRoomReq reEnterNN = new ReEntryNNRoomReq();
+                    req.messageId = MESSAGE_ID.msg_ReEntryNNRoomReq;
+                    reEnterNN.playerId = PlayerId;
+                    reEnterNN.roomId = nnRoom.GetRoomId;
+                    req.reEntryNNRoomReq = reEnterNN;
+
+                    PPSocket.GetInstance().SendMessage(req);
+                }
+                else
+                {
+                    LoadingEnd();
+                }
             }
             else
             {
-                SendReLoginReq();
+                ShowDialog(Strings.SS_ASK_RECONNECT_AGAIN, SendReConnectReq);
             }
             break;
 		default:
@@ -368,23 +380,27 @@ public class HomeController : MonoBehaviour
         // Android返回按钮
         if (Application.platform == RuntimePlatform.Android && (Input.GetKeyDown(KeyCode.Escape)))
         {
-            ShowDialog("是否要现在离开游戏？", Quit);
+            ShowDialog(Strings.SS_ASK_QUIT, Quit);
         }
 
-        if (TestHeartBeat)
+        if (OpenHeartBeat)
         {
             if (connected)
             {
                 // 心跳 15 秒一次
-                if ((System.DateTime.Now - lastHeartBeat).TotalSeconds > 15)
+                if (((System.DateTime.Now - lastHeartBeat).TotalSeconds > 15) && PlayerId > 0)
                 {
                     HeartBeatReq();
                 }
+            }
 
+            if (begineHeartBeat)
+            {
                 if ((System.DateTime.Now - lastHeartBeatResp).TotalSeconds > 30)
                 {
                     // 断线重连
-                    ReLoginReq();
+                    ReConnect();
+                    begineHeartBeat = false;
                 }
             }
         }
@@ -776,10 +792,14 @@ public class HomeController : MonoBehaviour
     public void ShowDialog(string content, UnityEngine.Events.UnityAction callback)
     {
         DialogContentText.text = content;
+        Debug.Log("<color=#0000ffff>ShowDialog Callback= " + callback + "</color>");
         if (lastDialogOKBtnCallBack != callback)
         {
+            if (lastDialogOKBtnCallBack != null)
+            {
+                DialogOKBtn.onClick.RemoveListener(lastDialogOKBtnCallBack);
+            }
             lastDialogOKBtnCallBack = callback;
-            DialogOKBtn.onClick.RemoveListener(lastDialogOKBtnCallBack);
             DialogOKBtn.onClick.AddListener(callback);
         }
         windows[WINDOW_ID.WINDOW_ID_DIALONG_FINAL].SetActive(true);
@@ -876,13 +896,21 @@ public class HomeController : MonoBehaviour
         Debug.Log("返回大厅！！！");
     }
 
-    private DateTime lastHeartBeat = System.DateTime.Now;
+    private DateTime lastHeartBeat = System.DateTime.Now.AddSeconds(-15);
     private DateTime lastHeartBeatResp = System.DateTime.Now;
     private bool connected = false;
+    private bool begineHeartBeat = false;
 
     public bool Connected
     {
-        set { connected = value; }
+        set
+        {
+            connected = value;
+            if (connected)
+            {
+                lastHeartBeat.AddSeconds(-15);
+            }
+        }
         get { return connected; }
     }
 
@@ -891,42 +919,54 @@ public class HomeController : MonoBehaviour
         // 心跳
         MessageInfo req = new MessageInfo();
         req.messageId = MESSAGE_ID.msg_HeartBeatReq;
+        HeartBeatReq hbreq = new HeartBeatReq();
+        hbreq.playerId = PlayerId;
+        req.heartBeatReq = hbreq;
 
         PPSocket.GetInstance().SendMessage(req);
 
         lastHeartBeat = System.DateTime.Now;
+        if (!begineHeartBeat)
+        {
+            lastHeartBeatResp = lastHeartBeat;
+            begineHeartBeat = true;
+        }
     }
 
-    private void ReLoginReq()
+    private void ReConnect()
     {
         PPSocket.GetInstance().Closed();
-        if(PPSocket.GetInstance().Connect(this))
+        ShowDialog(Strings.SS_ASK_RECONNECT, AgreeReloginReq);
+    }
+
+    public void AgreeReloginReq()
+    {
+        if (PPSocket.GetInstance().Connect(this))
         {
-            SendReLoginReq();
-            lastHeartBeatResp = System.DateTime.Now;
+            SendReConnectReq();
         }
         else
         {
-            ShowTips("网络连接失败，请检查网络是否打开！");
+            ShowDialog("网络连接失败，请检查网络是否打开，并继续重连？", AgreeReloginReq);
         }
     }
 
-    private void SendReLoginReq()
+    public void SendReConnectReq()
     {
         // 收到1004错误时强制登录
         MessageInfo req = new MessageInfo();
-        ReLoginReq relogin = new ReLoginReq();
-        req.messageId = MESSAGE_ID.msg_ReLoginReq;
-        relogin.playerId = PlayerPrefs.GetInt("PLAYERID");
-        relogin.token = PlayerPrefs.GetString("TOKEN");
-        req.reLoginReq = relogin;
+        ReConnectReq reconnect = new ReConnectReq();
+        req.messageId = MESSAGE_ID.msg_ReConnectReq;
+        reconnect.playerId = PlayerPrefs.GetInt("PLAYERID");
+        reconnect.token = PlayerPrefs.GetString("TOKEN");
+        req.reConnectReq = reconnect;
 
         PPSocket.GetInstance().SendMessage(req);
     }
 
     public void ChooseHeartBeat(Toggle tog)
     {
-        TestHeartBeat = tog.isOn;
+        OpenHeartBeat = tog.isOn;
         PlayerPrefs.SetInt("TestHeartBeat", tog.isOn ? 1 : 0);
     }
 }

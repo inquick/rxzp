@@ -87,3 +87,22 @@ public enum FlagType
     // 癞子
     Laizi = 2
 }
+
+public enum Sex
+{
+    // 女孩
+    Girl = 0,
+    // 男孩
+    Boy = 1,
+}
+
+public enum PayTypes
+{
+    PT_NONE = 0,
+    // 表示房费房主出
+    PT_PAY_ROOM_OWNER = 1,
+    // 表示房费AA
+    PT_PAY_AA = 2,
+    // 表示房费赢家出
+    PT_PAY_WIN = 3,
+}

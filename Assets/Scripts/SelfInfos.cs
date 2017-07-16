@@ -10,7 +10,7 @@ public class SelfInfos : MonoBehaviour
     // 微信头像
     public Image headIcon;
     // 名字
-    public Text name;
+    public Text playerName;
     // 玩家id
     public Text playerId;
     // 房卡数量
@@ -22,10 +22,15 @@ public class SelfInfos : MonoBehaviour
     {
         playerInfo = cpInfo;
 
-        name.text = playerInfo.Name;
+        playerName.text = playerInfo.Name;
         playerId.text = playerInfo.PlayerId.ToString();
         cardNum.text = playerInfo.LeaveCardCount.ToString();
-        if (playerInfo.HeadIconUrl != "")
+        if (playerInfo.HeadIcon != null)
+        {
+            headIcon.sprite = playerInfo.HeadIcon;
+            headIcon.gameObject.SetActive(true);
+        }
+        else if (playerInfo.HeadIconUrl != "")
         {
             StartCoroutine(DownloadImage(playerInfo.HeadIconUrl, headIcon));
         }

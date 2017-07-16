@@ -78,9 +78,6 @@ public class CreateDDZMenu : MonoBehaviour
         needKey = transform.Find("bg/Needkey/Num").gameObject.GetComponent<Text>();
         leaveKey = transform.Find("bg/Leavekey/Num").gameObject.GetComponent<Text>();
 
-        needKey.text = 3 + " 张";
-        leaveKey.text = 97 + " 张";
-
         Debug.Log("CreateMenu Start success!");
     }
 
@@ -191,7 +188,7 @@ public class CreateDDZMenu : MonoBehaviour
         {
             needKeyNum *= 3;
         }
-        needKey.text = needKeyNum + " 张";
-        leaveKey.text = (currentKeyNum - needKeyNum) + " 张";
+        needKey.text = string.Format(Strings.SS_CARD_NUMS, needKeyNum);
+        leaveKey.text = string.Format(Strings.SS_CARD_NUMS, currentKeyNum - needKeyNum);
     }
 }
