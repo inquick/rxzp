@@ -947,7 +947,7 @@ public class HomeController : MonoBehaviour
         }
         else
         {
-            ShowDialog("网络连接失败，请检查网络是否打开，并继续重连？", AgreeReloginReq);
+            ShowDialog(Strings.SS_ASK_RECONNECT_AGAIN, AgreeReloginReq);
         }
     }
 

@@ -205,7 +205,7 @@ public class CreateNNMenu : MonoBehaviour
             payType = PayTypes.PT_PAY_WIN;
             textpayWin.color = selected;
             RefreshKeyNum();
-            Debug.Log("AA支付");
+            Debug.Log("赢家支付");
         }
         else
         {
@@ -257,8 +257,8 @@ public class CreateNNMenu : MonoBehaviour
     private void RefreshKeyNum()
     {
 
-        needKey.text = NeedKeyNum() + " 张";
-        leaveKey.text = (controller.GetLeaveRoomCardNum - NeedKeyNum()) + " 张";
+        needKey.text = string.Format(Strings.SS_CARD_NUMS, NeedKeyNum());
+        leaveKey.text = string.Format(Strings.SS_CARD_NUMS, controller.GetLeaveRoomCardNum - NeedKeyNum());
     }
 
     private int NeedKeyNum()
