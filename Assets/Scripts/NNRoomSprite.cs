@@ -38,7 +38,7 @@ public class NNRoomSprite : MonoBehaviour
 
     private int games = 0;
 
-    private BankerType bankerType = BankerType.BT_NONE;
+    private BankerType m_bankerType = BankerType.BT_NONE;
 
     private PayTypes m_payType = PayTypes.PT_PAY_AA;
 
@@ -66,8 +66,8 @@ public class NNRoomSprite : MonoBehaviour
 
     public BankerType CurrentBankerType
     {
-        set { bankerType = value; }
-        get { return bankerType; }
+        set { m_bankerType = value; }
+        get { return m_bankerType; }
     }
 
     public int PayCount

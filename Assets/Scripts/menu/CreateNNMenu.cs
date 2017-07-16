@@ -17,7 +17,7 @@ public class CreateNNMenu : MonoBehaviour
 
     private int games = 10;
     private PayTypes payType = PayTypes.PT_PAY_AA;
-    private BankerType zhuangType = BankerType.BT_BAWANG;
+    private BankerType m_bankerType = BankerType.BT_BAWANG;
 
     public Toggle checkNum10 = null;
     public Toggle checkNum20 = null;
@@ -99,7 +99,7 @@ public class CreateNNMenu : MonoBehaviour
         req.messageId = MESSAGE_ID.msg_CreateNNRoomReq;
         createRoom.games = this.games;
         createRoom.type = (int)this.payType;
-        createRoom.bankerType = this.zhuangType;
+        createRoom.bankerType = this.m_bankerType;
         createRoom.playerId = controller.PlayerId;
         req.createNNRoomReq = createRoom;
 
@@ -112,6 +112,7 @@ public class CreateNNMenu : MonoBehaviour
         room.GameCounts = this.games;
         room.PayType = this.payType;
         room.PayCount = NeedKeyNum();
+        room.CurrentBankerType = this.m_bankerType;
 
         Debug.Log("CreateNNRoomReq sended!");
 
@@ -213,7 +214,7 @@ public class CreateNNMenu : MonoBehaviour
     {
         if (isSelected)
         {
-            zhuangType = BankerType.BT_BAWANG;
+            m_bankerType = BankerType.BT_BAWANG;
             textbawang.color = selected;
             Debug.Log("霸王庄");
         }
@@ -226,7 +227,7 @@ public class CreateNNMenu : MonoBehaviour
     {
         if (isSelected)
         {
-            zhuangType = BankerType.BT_LUNZHUANG;
+            m_bankerType = BankerType.BT_LUNZHUANG;
             textlun.color = selected;
             Debug.Log("轮庄");
         }
@@ -240,7 +241,7 @@ public class CreateNNMenu : MonoBehaviour
     {
         if (isSelected)
         {
-            zhuangType = BankerType.BT_ZHUANZHUANG;
+            m_bankerType = BankerType.BT_ZHUANZHUANG;
             textzhuan.color = selected;
             Debug.Log("转庄");
         }
