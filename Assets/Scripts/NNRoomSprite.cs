@@ -394,6 +394,10 @@ public class NNRoomSprite : MonoBehaviour
 
     private void BindPlayerInfoToSprite(ClientPlayerInfo cpi)
     {
+        // 这里处理比较特殊
+        operations.startBtn.GetComponent<Image>().material = null;
+        operations.startBtn.enabled = true;
+
         // 比自己先进房间的玩家
         switch (playerSelf.PlayerInfo.Order - cpi.Order)
         {
@@ -430,9 +434,6 @@ public class NNRoomSprite : MonoBehaviour
             default:
                 break;
         }
-
-        // 这里处理比较特殊
-        operations.startBtn.gameObject.SetActive(true);
     }
     // 继续下一局
     public void Again()

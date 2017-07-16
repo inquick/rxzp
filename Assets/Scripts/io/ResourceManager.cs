@@ -29,6 +29,8 @@ public class ResourceManager
 
     private Weight m_laize = Weight.LJoker;
 
+    private Material m_greyMaterial = null;
+
     /// <summary>
     /// 计时器数字
     /// </summary>
@@ -94,6 +96,8 @@ public class ResourceManager
         {
             stakes.Add(i, Resources.Load<Sprite>("nn/stake" + i));
         }
+
+        m_greyMaterial = Resources.Load<Material>("material/Grey");
     }
 
     public Sprite GetCardWeightSprite(int cardId)
@@ -169,5 +173,10 @@ public class ResourceManager
     public Sprite GetStakeSprite(int stake)
     {
         return stakes[stake];
+    }
+
+    public Material GreyMeterial
+    {
+        get { return m_greyMaterial; }
     }
 }

@@ -55,13 +55,9 @@ public class CreateNNMenu : MonoBehaviour
     //AudioSettings{}
     //}
 
-    private Material greyMaterial = null;
-
     void Start()
     {
         Debug.Log("CreateMenu Start!");
-
-        greyMaterial = Resources.Load<Material>("material/Grey");
 
         createBtn.onClick.AddListener(CreateRoom);
 
@@ -286,7 +282,7 @@ public class CreateNNMenu : MonoBehaviour
         if (controller.GetLeaveRoomCardNum < 1)
         {
             createBtn.enabled = false;
-            createBtn.GetComponent<Image>().material = greyMaterial;
+            createBtn.GetComponent<Image>().material = ResourceManager.Instance.GreyMeterial;
             checkPayLead.interactable = false;
             checkPayWin.interactable = false;
             checkNum20.interactable = false;

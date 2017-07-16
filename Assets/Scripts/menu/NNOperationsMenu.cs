@@ -166,7 +166,8 @@ public class NNOperationsMenu : MonoBehaviour
                 yafen.SetActive(false);
                 kaipai.SetActive(false);
                 ready.SetActive(false);
-                startBtn.gameObject.SetActive(false);
+                startBtn.GetComponent<Image>().material = ResourceManager.Instance.GreyMeterial;
+                startBtn.enabled = false;
                 break;
             case NNOperationGroup.NNOG_Yafen:
                 playgame.SetActive(false);
