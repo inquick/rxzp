@@ -10,12 +10,9 @@ public class SettlementPlayerInfo : MonoBehaviour
 
     public Text playerName;
     public Text id;
-    public Text idTitle;
+    public GameObject idCon;
 
     public Image headIcon;
-    public Image textBg;
-
-    public GameObject info;
 	// Use this for initialization
 	void Start () {
 	}
@@ -26,7 +23,10 @@ public class SettlementPlayerInfo : MonoBehaviour
 
     public void SetSettlementUI(int score, ClientPlayerInfo player, bool selfWin)
     {
-        info.SetActive(true);
+        headIcon.gameObject.SetActive(true);
+        playerName.gameObject.SetActive(true);
+        idCon.SetActive(true);
+        winScore.transform.parent.gameObject.SetActive(true);
 
         headIcon.sprite = player.HeadIcon;
 
@@ -38,7 +38,6 @@ public class SettlementPlayerInfo : MonoBehaviour
 
             playerName.text = player.Name;
             id.text = player.PlayerId.ToString();
-            idTitle.text = "ID :";
         }
         else
         {
@@ -47,19 +46,17 @@ public class SettlementPlayerInfo : MonoBehaviour
 
             playerName.text = string.Format("<color=#ffffffff>{0}</color>", player.Name);
             id.text = string.Format("<color=#ffffffff>{0}</color>", player.PlayerId.ToString());
-            idTitle.text = "<color=#ffffffff>ID :</color>";
         }
         finalText.sprite = Resources.Load<Sprite>(path + "final");
-
-        path = "";
-        if (selfWin)
-        {
-            path = "settlement/win/text_bg";
-        }else
-        {
-            path = "settlement/lose/text_bg";
-        }
-        textBg.sprite = Resources.Load<Sprite>(path);
         winScore.SetScore(score);
+    }
+
+    public void HideInfo()
+    {
+        headIcon.gameObject.SetActive(false);
+        playerName.gameObject.SetActive(false);
+        idCon.SetActive(false);
+        winScore.transform.parent.gameObject.SetActive(false);
+        winIcon.SetActive(false);
     }
 }

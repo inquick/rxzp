@@ -13,14 +13,19 @@ public class NNSettlementFinal : MonoBehaviour
     public SettlementPlayerInfo player4;
     public SettlementPlayerInfo player5;
     public Button closeBtn;
+    public Button backHome;
     public Button shareBtn;
     public HomeController controller;
     public ThirdParty thirdParty;
+
+    public Text time;
+    public Text roomId;
 
     private Dictionary<int, SettlementPlayerInfo> players = new Dictionary<int,SettlementPlayerInfo>();
 	// Use this for initialization
 	void Start () {
         closeBtn.onClick.AddListener(CloseWnd);
+        backHome.onClick.AddListener(CloseWnd);
         shareBtn.onClick.AddListener(ShareScreenshot);
 	}
 
@@ -63,6 +68,9 @@ public class NNSettlementFinal : MonoBehaviour
 
     public void SetSettlementUI(NNRoomSprite room, SettlementInfo info)
     {
+        time.text = System.DateTime.Now.ToString();
+        roomId.text = room.GetRoomId.ToString();
+
         if (players.Count == 0)
         {
             players.Add(0, player1);
@@ -88,21 +96,10 @@ public class NNSettlementFinal : MonoBehaviour
             players[index].SetSettlementUI(data.finalscore, room.GetPlayer(data.ID), selfWin);
             index++;
         }
-
-        // 输赢背景框
-        for(;index < 5; ++index)
+        while (index < 5)
         {
-            players[index].info.SetActive(false);
-            string path = "";
-            if (selfWin)
-            {
-                path = "settlement/win/text_bg";
-            }
-            else
-            {
-                path = "settlement/lose/text_bg";
-            }
-            players[index].textBg.sprite = Resources.Load<Sprite>(path);
+            players[index].HideInfo();
+            index++;
         }
     }
 }
